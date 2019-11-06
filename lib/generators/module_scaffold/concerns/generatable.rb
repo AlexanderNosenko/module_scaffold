@@ -10,6 +10,10 @@ module Generatable
     @options = options
   end
 
+  def model_class
+    @model_class ||= module_full_name.constantize
+  end
+
   def resource_name
     module_name.downcase
   end

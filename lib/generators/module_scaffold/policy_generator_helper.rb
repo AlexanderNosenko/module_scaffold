@@ -23,11 +23,7 @@ module ModuleScaffold
       end
 
       def permitted_attributes
-        [
-          :some,
-          :shot,
-          :ass
-        ]
+        model_class.new.attributes.keys
       end
 
       def permitted_attributes_formatted_str
