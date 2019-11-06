@@ -1,0 +1,55 @@
+<%= mc_wrap_with_namespaces(@controller_helper.namespace) do
+<<-EOS
+class #{@controller_helper.class_name} < BaseController
+#{@controller_helper.actions.include?(:index).present? ? "
+  def index
+    authorize(::#{@policy_helper.full_class_name})
+
+    #{@controller_helper.resource_name_plural} = policy_scope(::#{@controller_helper.module_full_name})
+    render_success(
+      #{@controller_helper.resource_name_plural},
+      meta: { total: #{@controller_helper.resource_name_plural}.count }
+    )
+  end" : ''}
+#{@controller_helper.actions.include?(:create).present? ? "
+  def create
+    authorize(::#{@policy_helper.full_class_name})
+
+    service = ::#{@service_helper.full_class_name('create')}.call(params)
+    render_service(service)
+  end" : ''}
+#{@controller_helper.actions.include?(:show).present? ? "
+  def show
+    authorize(::#{@policy_helper.full_class_name})
+
+    render_success(#{@controller_helper.resource_name})
+  end" : ''}
+#{@controller_helper.actions.include?(:update).present? ? "
+  def update
+    authorize(#{@controller_helper.resource_name})
+
+    service = ::#{@service_helper.full_class_name('update')}.call(resource_name, params)
+    render_service(service)
+  end" : ''}
+#{@controller_helper.actions.include?(:destroy).present? ? "
+  def destroy
+    authorize(#{@controller_helper.resource_name})
+
+    service = ::#{@service_helper.full_class_name('destroy')}.call(resource_name)
+
+    if service.success?
+      render_success(:deleted)
+    else
+      render_error(service)
+    end
+  end" : ''}
+#{(@controller_helper.actions & [:show, :create, :update]).any? ? "
+  private
+
+  def #{@controller_helper.resource_name}
+    @#{@controller_helper.resource_name} ||= policy_scope(::#{@controller_helper.module_full_name}).find(params[:id])
+  end" : ''}
+
+end
+EOS
+end %>

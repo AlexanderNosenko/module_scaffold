@@ -1,0 +1,41 @@
+<%= mc_wrap_with_namespaces(@policy_helper.namespace_dirs) do
+<<-EOS
+class #{@policy_helper.class_name} < ApplicationPolicy
+
+  def permitted_attributes
+    [
+      #{@policy_helper.permitted_attributes_formatted_str}
+    ]
+  end
+#{@controller_helper.actions.include?(:index).present? ? "
+  def index?
+    true
+  end" : ''}
+#{@controller_helper.actions.include?(:create).present? ? "
+  def create?
+    true
+  end" : ''}
+#{@controller_helper.actions.include?(:show).present? ? "
+  def show?
+    true
+  end" : ''}
+#{@controller_helper.actions.include?(:update).present? ? "
+  def update?
+    true
+  end" : ''}
+#{@controller_helper.actions.include?(:destroy).present? ? "
+  def destroy?
+    update?
+  end" : ''}
+
+  class Scope < Scope
+
+    def resolve
+      scope.all
+    end
+
+  end
+
+end
+EOS
+end %>

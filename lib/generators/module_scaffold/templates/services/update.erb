@@ -1,0 +1,33 @@
+<%= mc_wrap_with_namespaces(@service_helper.namespace_dirs) do
+  <<-EOS
+class #{@service_helper.class_name('update')} < ApplicationService
+
+  def initialize(#{@service_helper.resource_name}, params)
+    @#{@service_helper.resource_name} = #{@service_helper.resource_name}
+    @params = params
+  end
+
+  def call
+    update_#{@service_helper.resource_name}!
+    success(#{@service_helper.resource_name})
+  rescue ActiveRecord::RecordInvalid => e
+    failure(e.record)
+  end
+
+  private
+
+  attr_reader :params, :#{@service_helper.resource_name}
+
+  def update_#{@service_helper.resource_name}!
+    #{@service_helper.resource_name}.update!(valid_params)
+  end
+
+  def valid_params
+    return {} if params[:#{@service_helper.resource_name}].blank?
+
+    permitted_attributes(::#{@service_helper.module_full_name}, key: :#{@service_helper.resource_name})
+  end
+
+end
+EOS
+end %>

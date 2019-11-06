@@ -1,0 +1,22 @@
+<%= mc_wrap_with_namespaces(@service_helper.namespace_dirs) do
+  <<-EOS
+class #{@service_helper.class_name('destroy')} < ApplicationService
+
+  def initialize(#{@service_helper.resource_name})
+    @#{@service_helper.resource_name} = #{@service_helper.resource_name}
+  end
+
+  def call
+    #{@service_helper.resource_name}.destroy!
+    success(#{@service_helper.resource_name})
+  rescue ActiveRecord::RecordNotDestroyed => e
+    failure(e.record)
+  end
+
+  private
+
+  attr_reader :params, :#{@service_helper.resource_name}
+
+end
+EOS
+end %>
