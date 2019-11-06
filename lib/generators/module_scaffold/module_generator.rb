@@ -6,6 +6,7 @@ require_relative './serializer_generator_helper'
 require_relative './service_spec_generator_helper'
 require_relative './integration_spec_generator_helper'
 require_relative './spec_descriptor_generator_helper'
+require_relative './policy_spec_generator_helper'
 
 module ModuleScaffold
   module Generators
@@ -29,7 +30,8 @@ module ModuleScaffold
         @serializer_helper = SerializerGeneratorHelper.new(name)
         @service_spec_helper = ServiceSpecGeneratorHelper.new(name)
         @integration_spec_helper = IntegrationSpecGeneratorHelper.new(name, options)
-        @spec_descriptor_helper = SpecDescriptorGeneratorHelper.new(name, options)
+        @spec_descriptor_helper = SpecDescriptorGeneratorHelper.new(name)
+        @policy_spec_helper = PolicySpecGeneratorHelper.new(name, options)
       end
 
       def create_controller
@@ -115,6 +117,16 @@ module ModuleScaffold
           File.join(
             @integration_spec_helper.files_dir,
             @integration_spec_helper.class_file_name
+          )
+        )
+      end
+
+      def create_policy_spec
+        template(
+          "specs/policy.erb",
+          File.join(
+            @policy_spec_helper.files_dir,
+            @policy_spec_helper.class_file_name
           )
         )
       end

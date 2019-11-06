@@ -19,8 +19,7 @@ describe '<%= @integration_spec_helper.class_name %>', type: :request, rswag: tr
             collection: true,
             relationships: [],
             included: []
-          )
-        )
+        ))
 
         run_test! do
           expect_json_sizes('data', 1)
