@@ -3,6 +3,8 @@ require_relative './controller_generator_helper'
 require_relative './service_generator_helper'
 require_relative './policy_generator_helper'
 require_relative './serializer_generator_helper'
+require_relative './service_spec_generator_helper'
+require_relative './integration_spec_generator_helper'
 
 module ModuleScaffold
   module Generators
@@ -24,6 +26,8 @@ module ModuleScaffold
         @policy_helper = PolicyGeneratorHelper.new(name)
         @service_helper = ServiceGeneratorHelper.new(name, options)
         @serializer_helper = SerializerGeneratorHelper.new(name)
+        @service_spec_helper = ServiceSpecGeneratorHelper.new(name)
+        @integration_spec_helper = IntegrationSpecGeneratorHelper.new(name, options)
       end
 
       def create_controller
@@ -79,6 +83,28 @@ module ModuleScaffold
         end
 
         route route_string
+      end
+
+      def create_service_specs
+        @service_helper.supported_actions(@controller_helper.actions).each do |action|
+          template(
+            "specs/services/#{action}.erb",
+            File.join(
+              @service_spec_helper.files_dir,
+              @service_spec_helper.class_file_name(action)
+            )
+          )
+        end
+      end
+
+      def create_integration_specs
+        template(
+          "specs/integration.erb",
+          File.join(
+            @integration_spec_helper.files_dir,
+            @integration_spec_helper.class_file_name
+          )
+        )
       end
 
     end

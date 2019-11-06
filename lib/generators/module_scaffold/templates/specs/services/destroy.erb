@@ -1,0 +1,13 @@
+require 'rails_helper'
+
+describe <%= @service_helper.full_class_name('destroy') %> do
+  subject { described_class.new(<%= @service_helper.resource_name %>).call }
+
+  let_it_be(:<%= @service_helper.resource_name %>) { create(:<%= @service_helper.resource_name %>) }
+
+  describe '#call' do
+    it 'deletes <%= @service_helper.resource_name %>' do
+      expect { subject }.to change { <%= @service_helper.module_full_name %>.count }.by(-1)
+    end
+  end
+end

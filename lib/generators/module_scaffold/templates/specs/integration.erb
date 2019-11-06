@@ -1,0 +1,151 @@
+require 'swagger_helper'
+
+describe '<%= @integration_spec_helper.class_name %>', type: :request, rswag: true do
+  let_it_be(:<%= @integration_spec_helper.resource_name %>) { create(:<%= @integration_spec_helper.resource_name %>) }
+  let_it_be(:<%= @integration_spec_helper.resource_name %>_id) { <%= @integration_spec_helper.resource_name %>.id }
+
+  path '<%= @integration_spec_helper.index_route_str %>' do
+    get 'List all available <%= @integration_spec_helper.resource_name_plural %> in a given context' do
+      tags '<%= @integration_spec_helper.class_name %>'
+      produces 'application/json'
+
+      let_it_be(:external_<%= @integration_spec_helper.resource_name_plural %>) do
+        create_list(:<%= @integration_spec_helper.resource_name %>)
+      end
+
+      response '200', 'ok' do
+        schema(rswag_scheme(
+          <%= @integration_spec_helper.descriptor_class_name %>,
+            collection: true,
+            relationships: [],
+            included: []
+          )
+        )
+
+        run_test! do
+          expect_json_sizes('data', 1)
+        end
+      end
+
+      context 'unauthorized user' do
+        response '401', 'unauthorized' do
+          schema(rswag_error_scheme)
+          run_test!
+        end
+      end
+    end
+
+    post 'Create a <%= @integration_spec_helper.resource_name %>' do
+      tags '<%= @integration_spec_helper.class_name %>'
+      produces 'application/json'
+      consumes 'application/json'
+      parameter name: :params, in: :body, schema: <%= @integration_spec_helper.descriptor_class_name %>.new.request_attributes
+
+      let(:params) do
+        {
+          <%= @service_spec_helper.resource_name %>: {
+            <%= @service_spec_helper.tested_attributes_formatted_str %>
+          }
+        }
+      end
+
+      response '200', 'ok' do
+        schema(rswag_scheme(
+          <%= @integration_spec_helper.descriptor_class_name %>,
+          relationships: [],
+          included: []
+        ))
+
+        run_test! do
+          expected_value = params[:<%= @integration_spec_helper.resource_name %>][@policy_helper.permitted_attributes.first]
+          expect_json('data.attributes.<%= @policy_helper.permitted_attributes.first %>', expected_value)
+        end
+      end
+
+      response '422', 'unprocessable_entity' do
+        before { params[:<%= @integration_spec_helper.resource_name %>][@policy_helper.permitted_attributes.first] = '' }
+
+        schema(rswag_error_scheme)
+        run_test!
+      end
+    end
+  end
+
+  path '<%= @integration_spec_helper.index_route_str %>/{<%= @integration_spec_helper.resource_name %>_id}' do
+    get 'Get details of a given <%= @service_spec_helper.resource_name %>' do
+      tags '<%= @integration_spec_helper.class_name %>'
+      produces 'application/json'
+      parameter name: :<%= @integration_spec_helper.resource_name %>_id, in: :path, type: :string
+
+      response '200', 'ok' do
+        schema(rswag_scheme(
+          <%= @integration_spec_helper.descriptor_class_name %>,
+          relationships: [],
+          included: []
+        ))
+
+        run_test! do
+          expect_json('data.id', <%= @integration_spec_helper.resource_name %>.id.to_s)
+        end
+      end
+    end
+
+    patch 'Update a given <%= @integration_spec_helper.resource_name %>' do
+      tags '<%= @integration_spec_helper.class_name %>'
+      produces 'application/json'
+      consumes 'application/json'
+      parameter name: :<%= @integration_spec_helper.resource_name %>_id, in: :path, type: :string
+      parameter name: :params, in: :body, schema: <%= @integration_spec_helper.descriptor_class_name %>.new.request_attributes
+
+      let(:params) do
+        {
+          <%= @service_spec_helper.resource_name %>: {
+            <%= @service_spec_helper.tested_attributes_formatted_str %>
+          }
+        }
+      end
+
+      response '200', 'ok' do
+        schema(rswag_scheme(
+          <%= @integration_spec_helper.descriptor_class_name %>,
+          relationships: [],
+          included: []
+        ))
+
+        run_test! do
+          expected_value = params[:<%= @integration_spec_helper.resource_name %>][@policy_helper.permitted_attributes.first]
+          expect_json('data.attributes.<%= @policy_helper.permitted_attributes.first %>', expected_value)
+        end
+      end
+
+      response '422', 'unprocessable_entity' do
+        before { params[:<%= @integration_spec_helper.resource_name %>][@policy_helper.permitted_attributes.first] = '' }
+
+        schema(rswag_error_scheme)
+
+        run_test! do
+          expect_json('errors.0.source.pointer', '/data/attributes/<%= @policy_helper.permitted_attributes.first %>')
+          expect_json('errors.0.code', 'is_blank')
+        end
+      end
+    end
+
+    delete 'Destroy <%= @integration_spec_helper.resource_name %>' do
+      tags '<%= @integration_spec_helper.class_name %>'
+      produces 'application/json'
+      consumes 'application/json'
+      parameter name: :<%= @integration_spec_helper.resource_name %>_id, in: :path, type: :string
+
+      response '200', 'ok' do
+        schema({})
+
+        it 'destroys the <%= @integration_spec_helper.resource_name %>' do |example|
+          expect do
+            submit_request(example.metadata)
+          end.to change { ::<%= @integration_spec_helper.module_full_name %>.count }.by(-1)
+          assert_response_matches_metadata(example.metadata)
+        end
+      end
+    end
+  end
+end

@@ -1,0 +1,57 @@
+require 'rails_helper'
+
+describe <%= @service_helper.full_class_name('create') %> do
+  subject { described_class.new(ActionController::Parameters.new(params)).call }
+  let(:params) do
+    {
+      <%= @service_helper.resource_name %>: {
+        <%= @service_spec_helper.tested_attributes_formatted_str %>
+      }
+    }
+  end
+
+  describe '#call' do
+    context 'with valid params' do
+      it 'creates <%= @service_helper.resource_name %>' do
+        expect { subject }.to change { <%= @service_helper.module_full_name %>.count }.by(1)
+      end
+
+      it 'creates <%= @service_helper.resource_name %> with correct attributes' do
+        service = subject
+
+        expect(service.success?).to eq true
+        result = service.result
+        expect(result).to be_a <%= @service_helper.module_full_name %>
+
+        params[:<%= @service_helper.resource_name %>].each do |key, value|
+          expect(result[key]).to eq value
+        end
+      end
+    end
+
+    context 'with invalid params' do
+      let(:params) do
+      {
+        <%= @service_helper.resource_name %>: {
+          <%= @policy_helper.permitted_attributes.map do |attr|
+            "#{attr}: nil"
+          end.join(",\n") %>
+        }
+      }
+      end
+
+      it 'doesnt create <%= @service_helper.resource_name %>' do
+        expect { subject }.to change { <%= @service_helper.module_full_name %>.count }.by(0)
+      end
+
+      it 'returns invalid record as error attribute' do
+        service = subject
+
+        expect(service.success?).to eq false
+        expect(service.result).to eq nil
+        expect(service.error).to be_a <%= @service_helper.module_full_name %>
+        expect(service.error.valid?).to eq false
+      end
+    end
+  end
+end
