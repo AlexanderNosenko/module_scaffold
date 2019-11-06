@@ -1,0 +1,35 @@
+<%= mc_wrap_with_namespaces(@spec_descriptor_helper.namespace_dirs) do
+<<-EOS
+class #{@spec_descriptor_helper.class_name} < BaseDescriptor
+
+  def type
+    '#{@spec_descriptor_helper.resource_name}'
+  end
+
+  def response_attributes
+    {
+      #{@policy_helper.permitted_attributes.map do |attr|
+        @spec_descriptor_helper.format_attr_str(attr)
+      end.join(",\n")}
+    }
+  end
+
+  def request_attributes
+    {
+      type: :object,
+      properties: {
+        #{@spec_descriptor_helper.resource_name}: {
+          type: :object,
+          properties: {
+            #{@policy_helper.permitted_attributes.map do |attr|
+              @spec_descriptor_helper.format_attr_str(attr)
+            end.join(",\n")}
+          }
+        }
+      }
+    }
+  end
+
+end
+EOS
+end %>
