@@ -10,6 +10,13 @@ module Generatable
     @options = options
   end
 
+  def class_file_path
+    File.join(
+      files_dir,
+      class_file_name
+    )
+  end
+
   def model_class
     @model_class ||= module_full_name.constantize
   end

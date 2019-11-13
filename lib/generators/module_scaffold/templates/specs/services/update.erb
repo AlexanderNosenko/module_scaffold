@@ -1,30 +1,30 @@
 require 'rails_helper'
 
-describe <%= @service_helper.full_class_name('update') %> do
-  subject { described_class.new(<%= @service_helper.resource_name %>, ActionController::Parameters.new(params)).call }
-  let_it_be(:<%= @service_helper.resource_name %>) { create(:<%= @service_helper.resource_name %>) }
+describe <%= @services_helper.full_class_name('update') %> do
+  subject { described_class.new(<%= @services_helper.resource_name %>, ActionController::Parameters.new(params)).call }
+  let_it_be(:<%= @services_helper.resource_name %>) { create(:<%= @services_helper.resource_name %>) }
   let(:params) do
     {
-      <%= @service_helper.resource_name %>: {
-        <%= @service_spec_helper.tested_attributes_formatted_str %>
+      <%= @services_helper.resource_name %>: {
+        <%= @services_specs_helper.tested_attributes_formatted_str %>
       }
     }
   end
 
   describe '#call' do
     context 'with valid params' do
-      it 'doesnt create new <%= @service_helper.resource_name %>' do
-        expect { subject }.to change { <%= @service_helper.module_full_name %>.count }.by(0)
+      it 'doesnt create new <%= @services_helper.resource_name %>' do
+        expect { subject }.to change { <%= @services_helper.module_full_name %>.count }.by(0)
       end
 
-      it 'updates <%= @service_helper.resource_name %> with correct attributes' do
+      it 'updates <%= @services_helper.resource_name %> with correct attributes' do
         service = subject
 
         expect(service.success?).to eq true
         result = service.result
-        expect(result).to be_a <%= @service_helper.module_full_name %>
+        expect(result).to be_a <%= @services_helper.module_full_name %>
 
-        params[:<%= @service_helper.resource_name %>].each do |key, value|
+        params[:<%= @services_helper.resource_name %>].each do |key, value|
           expect(result[key]).to eq value
         end
       end
@@ -33,7 +33,7 @@ describe <%= @service_helper.full_class_name('update') %> do
     context 'with invalid params' do
       let(:params) do
         {
-          <%= @service_helper.resource_name %>: {
+          <%= @services_helper.resource_name %>: {
             <%= @policy_helper.permitted_attributes.map do |attr|
               "#{attr}: nil"
             end.join(",\n") %>
@@ -46,7 +46,7 @@ describe <%= @service_helper.full_class_name('update') %> do
 
         expect(service.success?).to eq false
         expect(service.result).to eq nil
-        expect(service.error).to be_a <%= @service_helper.module_full_name %>
+        expect(service.error).to be_a <%= @services_helper.module_full_name %>
         expect(service.error.valid?).to eq false
       end
     end

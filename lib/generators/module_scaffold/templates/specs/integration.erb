@@ -42,8 +42,8 @@ describe '<%= @integration_spec_helper.class_name %>', type: :request, rswag: tr
 
       let(:params) do
         {
-          <%= @service_spec_helper.resource_name %>: {
-            <%= @service_spec_helper.tested_attributes_formatted_str %>
+          <%= @services_specs_helper.resource_name %>: {
+            <%= @services_specs_helper.tested_attributes_formatted_str %>
           }
         }
       end
@@ -71,7 +71,7 @@ describe '<%= @integration_spec_helper.class_name %>', type: :request, rswag: tr
   end
 
   path '<%= @integration_spec_helper.index_route_str %>/{<%= @integration_spec_helper.route_id_param %>}' do
-    get 'Get details of a given <%= @service_spec_helper.resource_name %>' do
+    get 'Get details of a given <%= @services_specs_helper.resource_name %>' do
       tags '<%= @integration_spec_helper.class_name %>'
       produces 'application/json'
       parameter name: :<%= @integration_spec_helper.route_id_param %>, in: :path, type: :string
@@ -98,8 +98,8 @@ describe '<%= @integration_spec_helper.class_name %>', type: :request, rswag: tr
 
       let(:params) do
         {
-          <%= @service_spec_helper.resource_name %>: {
-            <%= @service_spec_helper.tested_attributes_formatted_str %>
+          <%= @services_specs_helper.resource_name %>: {
+            <%= @services_specs_helper.tested_attributes_formatted_str %>
           }
         }
       end

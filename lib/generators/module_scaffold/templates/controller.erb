@@ -15,7 +15,7 @@ class #{@controller_helper.class_name} < BaseController
   def create
     authorize(::#{@policy_helper.full_class_name})
 
-    service = ::#{@service_helper.full_class_name('create')}.call(params)
+    service = ::#{@services_helper.full_class_name('create')}.call(params)
     render_service(service)
   end" : ''}
 #{@controller_helper.actions.include?(:show).present? ? "
@@ -28,14 +28,14 @@ class #{@controller_helper.class_name} < BaseController
   def update
     authorize(#{@controller_helper.resource_name})
 
-    service = ::#{@service_helper.full_class_name('update')}.call(#{@controller_helper.resource_name}, params)
+    service = ::#{@services_helper.full_class_name('update')}.call(#{@controller_helper.resource_name}, params)
     render_service(service)
   end" : ''}
 #{@controller_helper.actions.include?(:destroy).present? ? "
   def destroy
     authorize(#{@controller_helper.resource_name})
 
-    service = ::#{@service_helper.full_class_name('destroy')}.call(#{@controller_helper.resource_name})
+    service = ::#{@services_helper.full_class_name('destroy')}.call(#{@controller_helper.resource_name})
 
     if service.success?
       render_success(:deleted)

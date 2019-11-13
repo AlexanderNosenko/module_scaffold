@@ -6,6 +6,17 @@ module ModuleScaffold
 
       include Generatable
 
+      def template_path(action)
+        "services/#{action}.erb"
+      end
+
+      def class_file_path(action)
+        File.join(
+          files_dir,
+          class_file_name(action)
+        )
+      end
+
       def class_name(action)
         "#{action.capitalize}#{module_name}"
       end

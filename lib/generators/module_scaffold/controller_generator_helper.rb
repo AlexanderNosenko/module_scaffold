@@ -6,6 +6,10 @@ module ModuleScaffold
 
       include Generatable
 
+      def template_path
+        'controller.erb'
+      end
+
       def class_name
         "#{module_name.pluralize}#{helper_type}"
       end

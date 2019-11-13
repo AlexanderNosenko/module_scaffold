@@ -6,6 +6,10 @@ module ModuleScaffold
 
       include Generatable
 
+      def template_path
+        'specs/integration.erb'
+      end
+
       def class_name
         module_name.pluralize
       end

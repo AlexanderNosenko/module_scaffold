@@ -6,6 +6,10 @@ module ModuleScaffold
 
       include Generatable
 
+      def template_path
+        'policy.erb'
+      end
+
       def class_name
         "#{module_name}#{helper_type}"
       end
