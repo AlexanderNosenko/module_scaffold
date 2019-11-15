@@ -1,10 +1,12 @@
 require_relative './concerns/generatable'
+require_relative './concerns/spec_generatable'
 
 module ModuleScaffold
   module Generators
     class SerializerSpecGeneratorHelper
 
       include Generatable
+      include SpecGeneratable
 
       def template_path
         'specs/serializer.erb'
@@ -19,13 +21,7 @@ module ModuleScaffold
       end
 
       def class_file_name
-        "#{resource_name}_#{helper_type.downcase}_spec.rb"
-      end
-
-      def files_dir
-        directory_path = ['spec', helper_type.downcase.pluralize]
-        directory_path += namespace_dirs.map(&:downcase)
-        directory_path.join('/')
+        "#{resource_name}_#{helper_type.underscore}_spec.rb"
       end
 
       def namespace_dirs

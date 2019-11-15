@@ -22,7 +22,7 @@ module Generatable
   end
 
   def resource_name
-    module_name.downcase
+    module_name.underscore
   end
 
   def module_name
@@ -34,8 +34,8 @@ module Generatable
   end
 
   def files_dir
-    directory_path = ['app', helper_type.downcase.pluralize]
-    directory_path += namespace_dirs.map(&:downcase)
+    directory_path = ['app', helper_type.underscore.pluralize]
+    directory_path += namespace_dirs.map(&:underscore)
     directory_path.join('/')
   end
 

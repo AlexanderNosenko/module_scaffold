@@ -48,7 +48,7 @@ module ModuleScaffold
             # content = indent(content)
           end
 
-          module_definition = "namespace :#{namespace_part.downcase} do \n#{maybe_content}\nend"
+          module_definition = "namespace :#{namespace_part.underscore} do \n#{maybe_content}\nend"
           module_definition = indent(module_definition) unless index.zero?
 
           acc.gsub!('placeholder', module_definition)

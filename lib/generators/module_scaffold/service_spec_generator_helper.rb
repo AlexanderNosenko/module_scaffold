@@ -1,10 +1,12 @@
 require_relative './concerns/generatable'
+require_relative './concerns/spec_generatable'
 
 module ModuleScaffold
   module Generators
     class ServiceSpecGeneratorHelper
 
       include Generatable
+      include SpecGeneratable
 
       def template_path(action)
         "specs/services/#{action}.erb"
@@ -29,12 +31,6 @@ module ModuleScaffold
 
       def class_file_name(action)
         "#{class_name(action).underscore}_spec.rb"
-      end
-
-      def files_dir
-        directory_path = ['spec', helper_type.downcase.pluralize]
-        directory_path += namespace_dirs.map(&:downcase)
-        directory_path.join('/')
       end
 
       def namespace_dirs

@@ -1,10 +1,12 @@
 require_relative './concerns/generatable'
+require_relative './concerns/spec_generatable'
 
 module ModuleScaffold
   module Generators
     class IntegrationSpecGeneratorHelper
 
       include Generatable
+      include SpecGeneratable
 
       def template_path
         'specs/integration.erb'
@@ -18,12 +20,6 @@ module ModuleScaffold
         "#{class_name.underscore}_spec.rb"
       end
 
-      def files_dir
-        directory_path = ['spec', helper_type.downcase]
-        directory_path += namespace_dirs.map(&:downcase)
-        directory_path.join('/')
-      end
-
       def namespace_dirs
         namespace_modules(module_full_name)[0..-2]
       end
@@ -34,9 +30,8 @@ module ModuleScaffold
 
       def index_route_str
         @controller_helper = ControllerGeneratorHelper.new(module_full_name, options)
-        dirs = @controller_helper.namespace_dirs
-        dirs += [class_name.underscore.pluralize]
-        "/#{dirs.map(&:downcase).join('/')}"
+        dirs = @controller_helper.namespace_dirs + [resource_name_plural]
+        "/#{dirs.map(&:underscore).join('/')}"
       end
 
       def sample_attribute_name

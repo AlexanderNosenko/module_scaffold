@@ -1,6 +1,5 @@
 # TODO: Misc
 #   * Add relations descriptors generator integration.erb
-#   * fix muli words names concatenation bug
 #   * add more features to specs
 #
 require_relative './generator_helpers'

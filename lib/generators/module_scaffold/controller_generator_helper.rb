@@ -15,7 +15,7 @@ module ModuleScaffold
       end
 
       def class_file_name
-        "#{resource_name_plural}_#{helper_type.downcase}.rb"
+        "#{resource_name_plural}_#{helper_type.underscore}.rb"
       end
 
       def namespace_dirs

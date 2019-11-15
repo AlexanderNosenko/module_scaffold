@@ -15,13 +15,7 @@ module ModuleScaffold
       end
 
       def class_file_name
-        "#{resource_name}_#{helper_type.downcase}.rb"
-      end
-
-      def files_dir
-        directory_path = ['spec', helper_type.downcase.pluralize]
-        directory_path += namespace_dirs.map(&:downcase)
-        directory_path.join('/')
+        "#{resource_name}_#{helper_type.underscore}.rb"
       end
 
       def namespace_dirs
