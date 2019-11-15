@@ -1,3 +1,8 @@
+# TODO: Misc
+#   * Add relations descriptors generator integration.erb
+#   * fix muli words names concatenation bug
+#   * add more features to specs
+#
 require_relative './generator_helpers'
 require_relative './controller_generator_helper'
 require_relative './service_generator_helper'
@@ -15,7 +20,7 @@ module ModuleScaffold
 
       source_root File.expand_path('../templates', __FILE__)
 
-      class_option :controller_namespace, type: :string, default: '', desc: 'Controller namespace'
+      class_option :routes_namespace, type: :string, default: '', desc: 'Routes namespace'
       class_option :controller_actions, type: :array, default: ControllerGeneratorHelper.new(nil).actions, desc: 'Desired controller actions'
       class_option :only, type: :array, default: [], desc: 'Runs only specified generators'
       class_option :except, type: :array, default: [], desc: 'Does not run specified generators'

@@ -25,7 +25,7 @@ describe ::<%= @policy_spec_helper.full_class_name %>, policy: true do
   end
 
   context 'being not authorized' do
-    it { is_expected.not_to permit_actions(<%= @policy_spec_helper.permitted_actions %>) }
+    it { is_expected.to forbid_actions(<%= @policy_spec_helper.permitted_actions %>) }
   end
 
 end

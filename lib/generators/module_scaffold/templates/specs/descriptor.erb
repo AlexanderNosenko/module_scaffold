@@ -26,7 +26,8 @@ class #{@descriptor_spec_helper.class_name} < BaseDescriptor
             end.join(",\n")}
           }
         }
-      }
+      },
+      required: ['#{@descriptor_spec_helper.resource_name}']
     }
   end
 

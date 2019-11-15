@@ -42,7 +42,7 @@ module ModuleScaffold
       def sample_attribute_name
         @sample_attribute_name ||= begin
           @policy_helper = PolicyGeneratorHelper.new(module_full_name)
-          @policy_helper.permitted_attributes.first
+          @policy_helper.permitted_attributes.sample
         end
       end
 

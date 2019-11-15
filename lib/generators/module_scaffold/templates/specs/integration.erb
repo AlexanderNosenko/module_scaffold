@@ -4,13 +4,21 @@ describe '<%= @integration_spec_helper.class_name %>', type: :request, rswag: tr
   let_it_be(:<%= @integration_spec_helper.resource_name %>) { create(:<%= @integration_spec_helper.resource_name %>) }
   let_it_be(:<%= @integration_spec_helper.route_id_param %>) { <%= @integration_spec_helper.resource_name %>.id }
 
+  let(:params) do
+    {
+      <%= @services_specs_helper.resource_name %>: {
+        <%= @services_specs_helper.tested_attributes_formatted_str %>
+      }
+    }
+  end
+
   path '<%= @integration_spec_helper.index_route_str %>' do
     get 'List all available <%= @integration_spec_helper.resource_name_plural %> in a given context' do
       tags '<%= @integration_spec_helper.class_name %>'
       produces 'application/json'
 
       let_it_be(:external_<%= @integration_spec_helper.resource_name_plural %>) do
-        create_list(:<%= @integration_spec_helper.resource_name %>)
+        create_list(:<%= @integration_spec_helper.resource_name %>, 1 )
       end
 
       response '200', 'ok' do
@@ -23,7 +31,9 @@ describe '<%= @integration_spec_helper.class_name %>', type: :request, rswag: tr
 
         run_test! do
           expect_json_sizes('data', 1)
+          expect_json('data.0.id', <%= @integration_spec_helper.resource_name %>.id.to_s)
         end
+
       end
 
       context 'unauthorized user' do
@@ -39,14 +49,6 @@ describe '<%= @integration_spec_helper.class_name %>', type: :request, rswag: tr
       produces 'application/json'
       consumes 'application/json'
       parameter name: :params, in: :body, schema: <%= @integration_spec_helper.descriptor_class_name %>.new.request_attributes
-
-      let(:params) do
-        {
-          <%= @services_specs_helper.resource_name %>: {
-            <%= @services_specs_helper.tested_attributes_formatted_str %>
-          }
-        }
-      end
 
       response '200', 'ok' do
         schema(rswag_scheme(
@@ -95,14 +97,6 @@ describe '<%= @integration_spec_helper.class_name %>', type: :request, rswag: tr
       consumes 'application/json'
       parameter name: :<%= @integration_spec_helper.route_id_param %>, in: :path, type: :string
       parameter name: :params, in: :body, schema: <%= @integration_spec_helper.descriptor_class_name %>.new.request_attributes
-
-      let(:params) do
-        {
-          <%= @services_specs_helper.resource_name %>: {
-            <%= @services_specs_helper.tested_attributes_formatted_str %>
-          }
-        }
-      end
 
       response '200', 'ok' do
         schema(rswag_scheme(

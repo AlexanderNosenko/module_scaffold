@@ -23,7 +23,7 @@ module ModuleScaffold
       end
 
       def namespace
-        options[:controller_namespace]
+        options[:routes_namespace]
       end
 
       def actions
