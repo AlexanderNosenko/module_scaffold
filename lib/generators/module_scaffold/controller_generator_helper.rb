@@ -4,7 +4,7 @@ class ControllerGeneratorHelper
 
   include Generatable
 
-  def template_path
+  def template_path(_)
     'controller.erb'
   end
 
@@ -12,7 +12,7 @@ class ControllerGeneratorHelper
     "#{module_name.pluralize}#{helper_type}"
   end
 
-  def class_file_name
+  def class_file_name(_)
     "#{resource_name_plural}_#{helper_type.underscore}.rb"
   end
 

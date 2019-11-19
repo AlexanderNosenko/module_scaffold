@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # TODO: Misc
 #   * Add relations descriptors generator integration.erb
 #   * add more features to specs
@@ -14,8 +16,7 @@ require_relative './policy_spec_generator_helper'
 require_relative './serializer_spec_generator_helper'
 
 class ModuleScaffoldGenerator < Rails::Generators::NamedBase
-
-  source_root File.expand_path('../templates', __FILE__)
+  source_root File.expand_path('templates', __dir__)
 
   class_option :'routes-namespace', type: :string, default: '', desc: 'Routes namespace'
   class_option :'controller-actions', type: :array, default: ControllerGeneratorHelper.new(nil).actions, desc: 'Desired controller & service actions'
@@ -23,18 +24,22 @@ class ModuleScaffoldGenerator < Rails::Generators::NamedBase
   class_option :except, type: :array, default: [], desc: 'Does not run specified generators'
   class_option :'skip-routes', type: :boolean, default: false, desc: 'Skips route generation'
 
-  desc "Generates service oriented CRUD scaffold for an existing Model"
+  desc 'Generates service oriented CRUD scaffold for an existing Model'
 
   include GeneratorHelpers
 
   def initialize_helpers
-    name.constantize rescue raise "Model #{name} is not defined"
+    begin
+      name.constantize
+    rescue StandardError
+      raise "Model #{name} is not defined"
+    end
 
     @controller_helper = ControllerGeneratorHelper.new(name, options)
     @policy_helper = PolicyGeneratorHelper.new(name)
     @services_helper = ServiceGeneratorHelper.new(name, options)
     @serializer_helper = SerializerGeneratorHelper.new(name)
-    @services_specs_helper = ServiceSpecGeneratorHelper.new(name)
+    @services_specs_helper = ServiceSpecGeneratorHelper.new(name, options)
     @integration_spec_helper = IntegrationSpecGeneratorHelper.new(name, options)
     @descriptor_spec_helper = SpecDescriptorGeneratorHelper.new(name)
     @policy_spec_helper = PolicySpecGeneratorHelper.new(name, options)
@@ -44,16 +49,8 @@ class ModuleScaffoldGenerator < Rails::Generators::NamedBase
   def run_generators
     required_generators.each do |generator_name|
       generator_helper = instance_variable_get("@#{generator_name}_helper")
-      puts "No generator called #{generator_name} can be found" if generator_helper.nil?
 
-      if ['services', 'services_specs'].include?(generator_name)
-        create_services(generator_helper)
-      else
-        template(
-          generator_helper.template_path,
-          generator_helper.class_file_path
-        )
-      end
+      create_files_from_template(generator_helper)
     end
   end
 
@@ -62,9 +59,9 @@ class ModuleScaffoldGenerator < Rails::Generators::NamedBase
 
     route_string = mc_wrap_route_with_namespaces(@controller_helper.namespace) do
       actions = @controller_helper
-        .actions
-        .map { |attr| ":#{attr}" }
-        .join(", ")
+                .actions
+                .map { |attr| ":#{attr}" }
+                .join(', ')
 
       "resources :#{@controller_helper.resource_name_plural}, only: [#{actions}]"
     end
@@ -75,16 +72,16 @@ class ModuleScaffoldGenerator < Rails::Generators::NamedBase
   private
 
   def required_generators
-    [
-      'controller',
-      'policy',
-      'serializer',
-      'services',
-      'descriptor_spec',
-      'integration_spec',
-      'policy_spec',
-      'services_specs',
-      'serializer_spec'
+    %w[
+      controller
+      policy
+      serializer
+      services
+      descriptor_spec
+      integration_spec
+      policy_spec
+      services_specs
+      serializer_spec
     ].tap do |default_generators|
       if options[:except].present?
         default_generators.reject! { |g| options[:except].include?(g) }
@@ -94,13 +91,12 @@ class ModuleScaffoldGenerator < Rails::Generators::NamedBase
     end
   end
 
-  def create_services(helper)
-    helper.supported_actions(@controller_helper.actions).each do |action|
+  def create_files_from_template(helper)
+    helper.versions.map do |version|
       template(
-        helper.template_path(action),
-        helper.class_file_path(action)
+        helper.template_path(version),
+        helper.class_file_path(version)
       )
     end
   end
-
 end

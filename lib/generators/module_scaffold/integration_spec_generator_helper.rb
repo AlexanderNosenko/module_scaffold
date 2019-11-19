@@ -6,7 +6,7 @@ class IntegrationSpecGeneratorHelper
   include Generatable
   include SpecGeneratable
 
-  def template_path
+  def template_path(_)
     'specs/integration.erb'
   end
 
@@ -14,7 +14,7 @@ class IntegrationSpecGeneratorHelper
     module_name.pluralize
   end
 
-  def class_file_name
+  def class_file_name(_)
     "#{class_name.underscore}_spec.rb"
   end
 

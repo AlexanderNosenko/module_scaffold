@@ -6,7 +6,7 @@ class PolicySpecGeneratorHelper
   include Generatable
   include SpecGeneratable
 
-  def template_path
+  def template_path(_)
     'specs/policy.erb'
   end
 
@@ -18,7 +18,7 @@ class PolicySpecGeneratorHelper
     "#{module_full_name}#{helper_type}"
   end
 
-  def class_file_name
+  def class_file_name(_)
     "#{resource_name}_#{helper_type.underscore}_spec.rb"
   end
 

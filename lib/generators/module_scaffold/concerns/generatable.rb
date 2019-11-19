@@ -10,10 +10,10 @@ module Generatable
     @options = options
   end
 
-  def class_file_path
+  def class_file_path(version = nil)
     File.join(
       files_dir,
-      class_file_name
+      class_file_name(version)
     )
   end
 
@@ -45,6 +45,12 @@ module Generatable
     else
       namespace.to_s.split('::')
     end
+  end
+
+  def versions
+    [
+      'default'
+    ]
   end
 
   module_function :namespace_modules

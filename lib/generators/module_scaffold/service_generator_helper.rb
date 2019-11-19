@@ -4,14 +4,14 @@ class ServiceGeneratorHelper
 
   include Generatable
 
-  def template_path(action)
-    "services/#{action}.erb"
+  def template_path(version)
+    "services/#{version}.erb"
   end
 
-  def class_file_path(action)
+  def class_file_path(version)
     File.join(
       files_dir,
-      class_file_name(action)
+      class_file_name(version)
     )
   end
 
@@ -25,16 +25,18 @@ class ServiceGeneratorHelper
     "#{module_full_name.pluralize}::#{class_name}"
   end
 
-  def class_file_name(action)
-    "#{class_name(action).underscore}.rb"
+  def class_file_name(version)
+    "#{class_name(version).underscore}.rb"
   end
 
   def namespace_dirs
     namespace_modules(module_full_name)[0..-2] + [module_name.pluralize]
   end
 
-  def supported_actions(controller_actions)
-    controller_actions & [:create, :update, :destroy]
+  def versions
+    @controller_helper = ControllerGeneratorHelper.new(module_full_name, options)
+
+    @controller_helper.actions & [:create, :update, :destroy]
   end
 
   private

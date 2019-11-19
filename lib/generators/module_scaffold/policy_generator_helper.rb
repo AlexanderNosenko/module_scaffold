@@ -4,7 +4,7 @@ class PolicyGeneratorHelper
 
   include Generatable
 
-  def template_path
+  def template_path(_)
     'policy.erb'
   end
 
@@ -16,7 +16,7 @@ class PolicyGeneratorHelper
     "#{module_full_name}#{helper_type}"
   end
 
-  def class_file_name
+  def class_file_name(_)
     "#{resource_name}_#{helper_type.underscore}.rb"
   end
 

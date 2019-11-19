@@ -4,7 +4,7 @@ class SerializerGeneratorHelper
 
   include Generatable
 
-  def template_path
+  def template_path(_)
     'serializer.erb'
   end
 
@@ -12,7 +12,7 @@ class SerializerGeneratorHelper
     "#{module_name}#{helper_type}"
   end
 
-  def class_file_name
+  def class_file_name(_)
     "#{resource_name}_#{helper_type.underscore}.rb"
   end
 
