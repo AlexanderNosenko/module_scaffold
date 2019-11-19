@@ -1,8 +1,14 @@
 # ModuleScaffold
 
+This gem is designed to be used in projects with:
+ * `Pundit` or similar for access management
+ * `FastJson` or similar for serialization
+ * `Rspec` for testing,
+ * `Rswag` for api documentation
+
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/module_scaffold`. To experiment with that code, run `bin/console` for an interactive prompt.
 
-TODO: Delete this and the text above, and describe your gem
+
 
 ## Installation
 
@@ -22,7 +28,43 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+##### Basic usage
+
+```ruby
+rails g module_scaffold <Model>
+```
+* Model - fully specified model class name. Model should implement method #attributes which returns hash with field names as keys.
+
+###### Example
+
+```ruby
+rails g module_scaffold Animals::Dog
+```
+
+```ruby
+create  app/controllers/dogs_controller.rb
+create  app/policies/animals/dog_policy.rb
+create  app/serializers/animals/dog_serializer.rb
+create  app/services/animals/dogs/create_dog.rb
+create  app/services/animals/dogs/update_dog.rb
+create  app/services/animals/dogs/destroy_dog.rb
+create  spec/integrations/animals/dogs_spec.rb
+create  spec/descriptors/animals/dog_descriptor.rb
+create  spec/policies/animals/dog_policy_spec.rb
+create  spec/services/animals/dogs/create_dog_spec.rb
+create  spec/services/animals/dogs/update_dog_spec.rb
+create  spec/services/animals/dogs/destroy_dog_spec.rb
+create  spec/serializers/animals/dog_serializer_spec.rb
+  route    resources :dogs, only: [:index, :show, :create, :update, :destroy]
+ ```
+
+##### 'I really don't need this file' usage
+
+To get the list of available options please run:
+
+```ruby
+rails g module_scaffold -h
+```
 
 ## Development
 
