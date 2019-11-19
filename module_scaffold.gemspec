@@ -12,14 +12,14 @@ Gem::Specification.new do |spec|
 
   spec.summary       = 'Opinionated module scaffold generator for Rails'
   spec.description   = 'For team using service-oriented approach for developing rails apis'
-  spec.homepage      = 'https://github.com/AlexandrNosenko/module_scaffold'
+  spec.homepage      = 'https://github.com/AlexanderNosenko/module_scaffold'
   spec.license       = 'MIT'
 
   # spec.metadata["allowed_push_host"] = "https://github.com/"
 
   spec.metadata['homepage_uri'] = spec.homepage
-  spec.metadata['source_code_uri'] = 'https://github.com/AlexandrNosenko/module_scaffold'
-  spec.metadata['changelog_uri'] = 'https://github.com/AlexandrNosenko/module_scaffold'
+  spec.metadata['source_code_uri'] = 'https://github.com/AlexanderNosenko/module_scaffold'
+  spec.metadata['changelog_uri'] = 'https://github.com/AlexanderNosenko/module_scaffold'
 
   # Specify which files should be added to the gem when it is released.
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
