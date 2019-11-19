@@ -4,16 +4,16 @@
 #   * Add relations descriptors generator integration.erb
 #   * add more features to specs
 #
-require_relative './generator_helpers'
-require_relative './controller_generator_helper'
-require_relative './service_generator_helper'
-require_relative './policy_generator_helper'
-require_relative './serializer_generator_helper'
-require_relative './service_spec_generator_helper'
-require_relative './integration_spec_generator_helper'
-require_relative './spec_descriptor_generator_helper'
-require_relative './policy_spec_generator_helper'
-require_relative './serializer_spec_generator_helper'
+require_relative './helpers/generator_helpers'
+require_relative './helpers/controller_generator_helper'
+require_relative './helpers/service_generator_helper'
+require_relative './helpers/policy_generator_helper'
+require_relative './helpers/serializer_generator_helper'
+require_relative './helpers/service_spec_generator_helper'
+require_relative './helpers/integration_spec_generator_helper'
+require_relative './helpers/spec_descriptor_generator_helper'
+require_relative './helpers/policy_spec_generator_helper'
+require_relative './helpers/serializer_spec_generator_helper'
 
 class ModuleScaffoldGenerator < Rails::Generators::NamedBase
   source_root File.expand_path('templates', __dir__)
