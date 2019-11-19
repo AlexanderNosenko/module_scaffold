@@ -98,7 +98,7 @@ class ModuleScaffoldGenerator < Rails::Generators::NamedBase
     helper.supported_actions(@controller_helper.actions).each do |action|
       template(
         helper.template_path(action),
-        helper.class_file_name(action)
+        helper.class_file_path(action)
       )
     end
   end
