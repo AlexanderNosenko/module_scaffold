@@ -1,6 +1,6 @@
 <%= mc_wrap_with_namespaces(@policy_helper.namespace_dirs) do
 <<-EOS
-class #{@policy_helper.class_name} < ApplicationPolicy
+class #{@policy_helper.class_name} < BasePolicy
 
   def permitted_attributes
     [

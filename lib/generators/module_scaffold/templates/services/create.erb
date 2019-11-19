@@ -1,6 +1,6 @@
 <%= mc_wrap_with_namespaces(@services_helper.namespace_dirs) do
 <<-EOS
-class #{@services_helper.class_name('create')} < ApplicationService
+class #{@services_helper.class_name('create')} < BaseService
 
   def initialize(params)
     @params = params

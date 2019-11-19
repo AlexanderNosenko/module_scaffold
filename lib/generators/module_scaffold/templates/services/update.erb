@@ -1,6 +1,6 @@
 <%= mc_wrap_with_namespaces(@services_helper.namespace_dirs) do
   <<-EOS
-class #{@services_helper.class_name('update')} < ApplicationService
+class #{@services_helper.class_name('update')} < BaseService
 
   def initialize(#{@services_helper.resource_name}, params)
     @#{@services_helper.resource_name} = #{@services_helper.resource_name}
