@@ -1,13 +1,13 @@
 require_relative './concerns/generatable'
 require_relative './concerns/spec_generatable'
 
-class SerializerSpecGeneratorHelper
+class PolicySpecGenerator
 
   include Generatable
   include SpecGeneratable
 
   def template_path(_)
-    'specs/serializer.erb'
+    'specs/policy.erb'
   end
 
   def class_name
@@ -26,6 +26,10 @@ class SerializerSpecGeneratorHelper
     model_class.new.attributes.keys
   end
 
+  def permitted_actions
+    controller_generator.actions
+  end
+
   def permitted_attributes_formatted_str
     permitted_attributes.map do |attr|
       ":#{attr}"
@@ -35,7 +39,11 @@ class SerializerSpecGeneratorHelper
   private
 
   def helper_type
-    'Serializer'
+    'Policy'
+  end
+
+  def controller_generator
+    @controller_generator ||= ControllerGenerator.new(module_full_name, options)
   end
 
 end

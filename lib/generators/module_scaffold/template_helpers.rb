@@ -1,4 +1,4 @@
-module GeneratorHelpers
+module TemplateHelpers
   private
 
   def mc_wrap_with_namespaces(namespace, &context_block)

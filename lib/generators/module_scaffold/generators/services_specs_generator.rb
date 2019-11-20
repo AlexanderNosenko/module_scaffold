@@ -1,20 +1,13 @@
 require_relative './concerns/generatable'
 require_relative './concerns/spec_generatable'
 
-class ServicesSpecsGeneratorHelper
+class ServicesSpecsGenerator
 
   include Generatable
   include SpecGeneratable
 
   def template_path(version)
     "specs/services/#{version}.erb"
-  end
-
-  def class_file_path(version)
-    File.join(
-      files_dir,
-      class_file_name(version)
-    )
   end
 
   def class_name(action)
@@ -36,11 +29,11 @@ class ServicesSpecsGeneratorHelper
   end
 
   def versions
-    controller_helper.actions & [:create, :update, :destroy]
+    services_generator.versions
   end
 
   def tested_attributes_formatted_str
-    attributes = policy_helper.permitted_attributes - ['id', 'created_at', 'updated_at']
+    attributes = policy_generator.permitted_attributes - ['id', 'created_at', 'updated_at']
 
     attributes.map do |attr|
       "#{attr}: Faker::Name.first_name"
@@ -48,7 +41,7 @@ class ServicesSpecsGeneratorHelper
   end
 
   def permitted_attributes
-    policy_helper.permitted_attributes
+    policy_generator.permitted_attributes
   end
 
   private
@@ -57,12 +50,13 @@ class ServicesSpecsGeneratorHelper
     'Service'
   end
 
-  def policy_helper
-    @policy_helper ||= PolicyGeneratorHelper.new(module_full_name, options)
+  def policy_generator
+    @policy_generator ||= PolicyGenerator.new(module_full_name, options)
   end
 
-  def controller_helper
-    @controller_helper ||= ControllerGeneratorHelper.new(module_full_name, options)
+  def services_generator
+    @services_generator ||= ServicesGenerator.new(module_full_name, options)
   end
+
 
 end

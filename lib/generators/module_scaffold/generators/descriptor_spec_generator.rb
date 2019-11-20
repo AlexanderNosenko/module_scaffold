@@ -1,6 +1,6 @@
 require_relative './concerns/generatable'
 
-class DescriptorSpecGeneratorHelper
+class DescriptorSpecGenerator
 
   include Generatable
 
@@ -21,7 +21,7 @@ class DescriptorSpecGeneratorHelper
   end
 
   def attributes
-    policy_helper.permitted_attributes
+    policy_generator.permitted_attributes
   end
 
   private
@@ -30,8 +30,8 @@ class DescriptorSpecGeneratorHelper
     'Descriptor'
   end
 
-  def policy_helper
-    @policy_helper ||= PolicyGeneratorHelper.new(module_full_name, options)
+  def policy_generator
+    @policy_generator ||= PolicyGenerator.new(module_full_name, options)
   end
 
 end

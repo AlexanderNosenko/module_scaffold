@@ -1,54 +1,54 @@
-<%= mc_wrap_with_namespaces(@helper.namespace) do
+<%= mc_wrap_with_namespaces(@generator.namespace) do
 <<-EOS
-class #{@helper.class_name} < BaseController
-#{@helper.action_allowed?(:index) ? "
+class #{@generator.class_name} < BaseController
+#{@generator.action_allowed?(:index) ? "
   def index
-    authorize(::#{@helper.module_full_name})
+    authorize(::#{@generator.module_full_name})
 
     render_success(
-      #{@helper.resource_name_plural},
-      meta: { total: #{@helper.resource_name_plural}.count }
+      #{@generator.resource_name_plural},
+      meta: { total: #{@generator.resource_name_plural}.count }
     )
   end" : ''}
-#{@helper.action_allowed?(:create) ? "
+#{@generator.action_allowed?(:create) ? "
   def create
-    authorize(::#{@helper.module_full_name})
+    authorize(::#{@generator.module_full_name})
 
-    service = ::#{@helper.service_name('create')}.call(params)
+    service = ::#{@generator.service_name('create')}.call(params)
 
     render_service(service)
   end" : ''}
-#{@helper.action_allowed?(:show) ? "
+#{@generator.action_allowed?(:show) ? "
   def show
-    authorize(#{@helper.resource_name})
+    authorize(#{@generator.resource_name})
 
-    render_success(#{@helper.resource_name})
+    render_success(#{@generator.resource_name})
   end" : ''}
-#{@helper.action_allowed?(:update) ? "
+#{@generator.action_allowed?(:update) ? "
   def update
-    authorize(#{@helper.resource_name})
+    authorize(#{@generator.resource_name})
 
-    service = ::#{@helper.service_name('update')}.call(#{@helper.resource_name}, params)
+    service = ::#{@generator.service_name('update')}.call(#{@generator.resource_name}, params)
 
     render_service(service)
   end" : ''}
-#{@helper.action_allowed?(:destroy) ? "
+#{@generator.action_allowed?(:destroy) ? "
   def destroy
-    authorize(#{@helper.resource_name})
+    authorize(#{@generator.resource_name})
 
-    service = ::#{@helper.service_name('destroy')}.call(#{@helper.resource_name})
+    service = ::#{@generator.service_name('destroy')}.call(#{@generator.resource_name})
 
     render_service(service)
   end" : ''}
-#{(@helper.actions & [:show, :create, :update]).any? ? "
+#{(@generator.actions & [:show, :create, :update]).any? ? "
   private
 
-  def #{@helper.resource_name}
-    @#{@helper.resource_name} ||= #{@helper.resource_name_plural}.find(params[:id])
+  def #{@generator.resource_name}
+    @#{@generator.resource_name} ||= #{@generator.resource_name_plural}.find(params[:id])
   end
 
-  def #{@helper.resource_name_plural}
-    @#{@helper.resource_name_plural} ||= policy_scope(::#{@helper.module_full_name})
+  def #{@generator.resource_name_plural}
+    @#{@generator.resource_name_plural} ||= policy_scope(::#{@generator.module_full_name})
   end" : ''}
 
 end

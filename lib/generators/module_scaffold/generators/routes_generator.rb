@@ -1,8 +1,8 @@
-class RoutesGeneratorHelper
+class RoutesGenerator
   include Generatable
 
   def route_string
-    GeneratorHelpers.mc_wrap_route_with_namespaces(namespace) do
+    TemplateHelpers.mc_wrap_route_with_namespaces(namespace) do
       "resources :#{resource_name_plural}, only: [#{actions_str}]"
     end
   end
@@ -14,7 +14,7 @@ class RoutesGeneratorHelper
   private
 
   def actions_str
-    controller_helper
+    controller_generator
       .actions
       .map { |attr| ":#{attr}" }
       .join(', ')
@@ -24,7 +24,7 @@ class RoutesGeneratorHelper
     options[:'routes-namespace']
   end
 
-  def controller_helper
-    @controller_helper ||= ControllerGeneratorHelper.new(module_full_name, options)
+  def controller_generator
+    @controller_generator ||= ControllerGenerator.new(module_full_name, options)
   end
 end

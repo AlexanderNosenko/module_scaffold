@@ -1,29 +1,29 @@
-<%= mc_wrap_with_namespaces(@helper.namespace_dirs) do
+<%= mc_wrap_with_namespaces(@generator.namespace_dirs) do
 <<-EOS
-class #{@helper.class_name} < BasePolicy
+class #{@generator.class_name} < BasePolicy
 
   def permitted_attributes
     [
-      #{@helper.permitted_attributes_formatted_str}
+      #{@generator.permitted_attributes_formatted_str}
     ]
   end
-#{@helper.action_allowed?(:index) ? "
+#{@generator.action_allowed?(:index) ? "
   def index?
     true
   end" : ''}
-#{@helper.action_allowed?(:create) ? "
+#{@generator.action_allowed?(:create) ? "
   def create?
     true
   end" : ''}
-#{@helper.action_allowed?(:show) ? "
+#{@generator.action_allowed?(:show) ? "
   def show?
     true
   end" : ''}
-#{@helper.action_allowed?(:update) ? "
+#{@generator.action_allowed?(:update) ? "
   def update?
     true
   end" : ''}
-#{@helper.action_allowed?(:destroy) ? "
+#{@generator.action_allowed?(:destroy) ? "
   def destroy?
     update?
   end" : ''}
