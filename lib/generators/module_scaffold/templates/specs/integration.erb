@@ -25,8 +25,8 @@ describe '<%= @generator.class_name %>', type: :request, rswag: true do
         schema(rswag_scheme(
           <%= @generator.descriptor_class_name %>,
             collection: true,
-            relationships: [],
-            included: []
+            relationships: [<%= @generator.relationship_descriptors_formatted_str %>],
+            included: [<%= @generator.relationship_descriptors_formatted_str %>]
         ))
 
         run_test! do
@@ -53,8 +53,8 @@ describe '<%= @generator.class_name %>', type: :request, rswag: true do
       response '200', 'ok' do
         schema(rswag_scheme(
           <%= @generator.descriptor_class_name %>,
-          relationships: [],
-          included: []
+          relationships: [<%= @generator.relationship_descriptors_formatted_str %>],
+          included: [<%= @generator.relationship_descriptors_formatted_str %>]
         ))
 
         run_test! do
@@ -81,8 +81,8 @@ describe '<%= @generator.class_name %>', type: :request, rswag: true do
       response '200', 'ok' do
         schema(rswag_scheme(
           <%= @generator.descriptor_class_name %>,
-          relationships: [],
-          included: []
+          relationships: [<%= @generator.relationship_descriptors_formatted_str %>],
+          included: [<%= @generator.relationship_descriptors_formatted_str %>]
         ))
 
         run_test! do
@@ -101,8 +101,8 @@ describe '<%= @generator.class_name %>', type: :request, rswag: true do
       response '200', 'ok' do
         schema(rswag_scheme(
           <%= @generator.descriptor_class_name %>,
-          relationships: [],
-          included: []
+          relationships: [<%= @generator.relationship_descriptors_formatted_str %>],
+          included: [<%= @generator.relationship_descriptors_formatted_str %>]
         ))
 
         run_test! do
