@@ -1,54 +1,54 @@
-<%= mc_wrap_with_namespaces(@controller_helper.namespace) do
+<%= mc_wrap_with_namespaces(@helper.namespace) do
 <<-EOS
-class #{@controller_helper.class_name} < BaseController
-#{@controller_helper.actions.include?(:index).present? ? "
+class #{@helper.class_name} < BaseController
+#{@helper.action_allowed?(:index) ? "
   def index
-    authorize(::#{@controller_helper.module_full_name})
+    authorize(::#{@helper.module_full_name})
 
     render_success(
-      #{@controller_helper.resource_name_plural},
-      meta: { total: #{@controller_helper.resource_name_plural}.count }
+      #{@helper.resource_name_plural},
+      meta: { total: #{@helper.resource_name_plural}.count }
     )
   end" : ''}
-#{@controller_helper.actions.include?(:create).present? ? "
+#{@helper.action_allowed?(:create) ? "
   def create
-    authorize(::#{@controller_helper.module_full_name})
+    authorize(::#{@helper.module_full_name})
 
-    service = ::#{@controller_helper.services_helper.full_class_name('create')}.call(params)
+    service = ::#{@helper.service_name('create')}.call(params)
 
     render_service(service)
   end" : ''}
-#{@controller_helper.actions.include?(:show).present? ? "
+#{@helper.action_allowed?(:show) ? "
   def show
-    authorize(#{@controller_helper.resource_name})
+    authorize(#{@helper.resource_name})
 
-    render_success(#{@controller_helper.resource_name})
+    render_success(#{@helper.resource_name})
   end" : ''}
-#{@controller_helper.actions.include?(:update).present? ? "
+#{@helper.action_allowed?(:update) ? "
   def update
-    authorize(#{@controller_helper.resource_name})
+    authorize(#{@helper.resource_name})
 
-    service = ::#{@controller_helper.services_helper.full_class_name('update')}.call(#{@controller_helper.resource_name}, params)
+    service = ::#{@helper.service_name('update')}.call(#{@helper.resource_name}, params)
 
     render_service(service)
   end" : ''}
-#{@controller_helper.actions.include?(:destroy).present? ? "
+#{@helper.action_allowed?(:destroy) ? "
   def destroy
-    authorize(#{@controller_helper.resource_name})
+    authorize(#{@helper.resource_name})
 
-    service = ::#{@controller_helper.services_helper.full_class_name('destroy')}.call(#{@controller_helper.resource_name})
+    service = ::#{@helper.service_name('destroy')}.call(#{@helper.resource_name})
 
     render_service(service)
   end" : ''}
-#{(@controller_helper.actions & [:show, :create, :update]).any? ? "
+#{(@helper.actions & [:show, :create, :update]).any? ? "
   private
 
-  def #{@controller_helper.resource_name}
-    @#{@controller_helper.resource_name} ||= #{@controller_helper.resource_name_plural}.find(params[:id])
+  def #{@helper.resource_name}
+    @#{@helper.resource_name} ||= #{@helper.resource_name_plural}.find(params[:id])
   end
 
-  def #{@controller_helper.resource_name_plural}
-    @#{@controller_helper.resource_name_plural} ||= policy_scope(::#{@controller_helper.module_full_name})
+  def #{@helper.resource_name_plural}
+    @#{@helper.resource_name_plural} ||= policy_scope(::#{@helper.module_full_name})
   end" : ''}
 
 end

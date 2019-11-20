@@ -1,29 +1,29 @@
 require 'rails_helper'
 
-describe <%= @services_helper.full_class_name('create') %> do
+describe ::<%= @helper.full_class_name('create') %> do
   subject { described_class.new(ActionController::Parameters.new(params)).call }
   let(:params) do
     {
-      <%= @services_helper.resource_name %>: {
-        <%= @services_specs_helper.tested_attributes_formatted_str %>
+      <%= @helper.resource_name %>: {
+        <%= @helper.tested_attributes_formatted_str %>
       }
     }
   end
 
   describe '#call' do
     context 'with valid params' do
-      it 'creates <%= @services_helper.resource_name %>' do
-        expect { subject }.to change { <%= @services_helper.module_full_name %>.count }.by(1)
+      it 'creates <%= @helper.resource_name %>' do
+        expect { subject }.to change { ::<%= @helper.module_full_name %>.count }.by(1)
       end
 
-      it 'creates <%= @services_helper.resource_name %> with correct attributes' do
+      it 'creates <%= @helper.resource_name %> with correct attributes' do
         service = subject
 
         expect(service.success?).to eq true
         result = service.result
-        expect(result).to be_a <%= @services_helper.module_full_name %>
+        expect(result).to be_a ::<%= @helper.module_full_name %>
 
-        params[:<%= @services_helper.resource_name %>].each do |key, value|
+        params[:<%= @helper.resource_name %>].each do |key, value|
           expect(result[key]).to eq value
         end
       end
@@ -32,16 +32,16 @@ describe <%= @services_helper.full_class_name('create') %> do
     context 'with invalid params' do
       let(:params) do
       {
-        <%= @services_helper.resource_name %>: {
-          <%= @policy_helper.permitted_attributes.map do |attr|
+        <%= @helper.resource_name %>: {
+          <%= @helper.permitted_attributes.map do |attr|
             "#{attr}: nil"
           end.join(",\n") %>
         }
       }
       end
 
-      it 'doesnt create <%= @services_helper.resource_name %>' do
-        expect { subject }.to change { <%= @services_helper.module_full_name %>.count }.by(0)
+      it 'doesnt create <%= @helper.resource_name %>' do
+        expect { subject }.to change { ::<%= @helper.module_full_name %>.count }.by(0)
       end
 
       it 'returns invalid record as error attribute' do
@@ -49,7 +49,7 @@ describe <%= @services_helper.full_class_name('create') %> do
 
         expect(service.success?).to eq false
         expect(service.result).to eq nil
-        expect(service.error).to be_a <%= @services_helper.module_full_name %>
+        expect(service.error).to be_a ::<%= @helper.module_full_name %>
         expect(service.error.valid?).to eq false
       end
     end

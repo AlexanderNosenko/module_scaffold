@@ -1,31 +1,31 @@
 require 'rails_helper'
 
-describe ::<%= @policy_spec_helper.full_class_name %>, policy: true do
-  subject { described_class.new(<%= @policy_spec_helper.resource_name %>) }
-  let(:resolved_scope) { described_class::Scope.new(::<%= @policy_spec_helper.module_full_name %>.all).resolve }
-  let_it_be(:<%= @policy_spec_helper.resource_name %>) { create(:<%= @policy_spec_helper.resource_name %>) }
-  let_it_be(:external_<%= @policy_spec_helper.resource_name %>) { create(:<%= @policy_spec_helper.resource_name %>) }
+describe ::<%= @helper.full_class_name %>, policy: true do
+  subject { described_class.new(<%= @helper.resource_name %>) }
+  let(:resolved_scope) { described_class::Scope.new(::<%= @helper.module_full_name %>.all).resolve }
+  let_it_be(:<%= @helper.resource_name %>) { create(:<%= @helper.resource_name %>) }
+  let_it_be(:external_<%= @helper.resource_name %>) { create(:<%= @helper.resource_name %>) }
 
-  it { is_expected.to permit_actions(<%= @policy_spec_helper.permitted_actions %>) }
+  it { is_expected.to permit_actions(<%= @helper.permitted_actions %>) }
 
   context 'scope' do
-    it 'has access to own <%= @policy_spec_helper.resource_name %>' do
-      expect(resolved_scope).to include(<%= @policy_spec_helper.resource_name %>)
+    it 'has access to own <%= @helper.resource_name %>' do
+      expect(resolved_scope).to include(<%= @helper.resource_name %>)
     end
 
-    it 'doesnt have access other <%= @policy_spec_helper.resource_name_plural %>' do
-      expect(resolved_scope).not_to include(external_<%= @policy_spec_helper.resource_name %>)
+    it 'doesnt have access other <%= @helper.resource_name_plural %>' do
+      expect(resolved_scope).not_to include(external_<%= @helper.resource_name %>)
     end
   end
 
   specify do
     is_expected.to permit_mass_assignment_of(
-      <%= @policy_spec_helper.permitted_attributes_formatted_str %>
+      <%= @helper.permitted_attributes_formatted_str %>
     )
   end
 
   context 'being not authorized' do
-    it { is_expected.to forbid_actions(<%= @policy_spec_helper.permitted_actions %>) }
+    it { is_expected.to forbid_actions(<%= @helper.permitted_actions %>) }
   end
 
 end

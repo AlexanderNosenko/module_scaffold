@@ -31,14 +31,22 @@ class ControllerGeneratorHelper
     options[:'controller-actions'].map(&:to_sym).presence || @default_actions
   end
 
-  def services_helper
-    @services_helper ||= ServicesGeneratorHelper.new(module_full_name, options)
+  def action_allowed?(action)
+    actions.include?(action.to_sym).present?
+  end
+
+  def service_name(action)
+    services_helper.full_class_name(action)
   end
 
   private
 
   def helper_type
     'Controller'
+  end
+
+  def services_helper
+    @services_helper ||= ServicesGeneratorHelper.new(module_full_name, options)
   end
 
 end
