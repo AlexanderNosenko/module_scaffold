@@ -1,31 +1,31 @@
-<%= mc_wrap_with_namespaces(@helper.namespace_dirs) do
+<%= mc_wrap_with_namespaces(@generator.namespace_dirs) do
   <<-EOS
-class #{@helper.class_name('update')} < BaseService
+class #{@generator.class_name('update')} < BaseService
 
-  def initialize(#{@helper.resource_name}, params)
-    @#{@helper.resource_name} = #{@helper.resource_name}
+  def initialize(#{@generator.resource_name}, params)
+    @#{@generator.resource_name} = #{@generator.resource_name}
     @params = params
   end
 
   def call
-    update_#{@helper.resource_name}!
-    success(#{@helper.resource_name})
+    update_#{@generator.resource_name}!
+    success(#{@generator.resource_name})
   rescue ActiveRecord::RecordInvalid => e
     failure(e.record)
   end
 
   private
 
-  attr_reader :params, :#{@helper.resource_name}
+  attr_reader :params, :#{@generator.resource_name}
 
-  def update_#{@helper.resource_name}!
-    #{@helper.resource_name}.update!(valid_params)
+  def update_#{@generator.resource_name}!
+    #{@generator.resource_name}.update!(valid_params)
   end
 
   def valid_params
-    return {} if params[:#{@helper.resource_name}].blank?
+    return {} if params[:#{@generator.resource_name}].blank?
 
-    permitted_attributes(::#{@helper.module_full_name}, key: :#{@helper.resource_name})
+    permitted_attributes(::#{@generator.module_full_name}, key: :#{@generator.resource_name})
   end
 
 end

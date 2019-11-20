@@ -1,30 +1,30 @@
 require 'rails_helper'
 
-describe <%= @helper.full_class_name('update') %> do
-  subject { described_class.new(<%= @helper.resource_name %>, ActionController::Parameters.new(params)).call }
-  let_it_be(:<%= @helper.resource_name %>) { create(:<%= @helper.resource_name %>) }
+describe <%= @generator.full_class_name('update') %> do
+  subject { described_class.new(<%= @generator.resource_name %>, ActionController::Parameters.new(params)).call }
+  let_it_be(:<%= @generator.resource_name %>) { create(:<%= @generator.resource_name %>) }
   let(:params) do
     {
-      <%= @helper.resource_name %>: {
-        <%= @helper.tested_attributes_formatted_str %>
+      <%= @generator.resource_name %>: {
+        <%= @generator.tested_attributes_formatted_str %>
       }
     }
   end
 
   describe '#call' do
     context 'with valid params' do
-      it 'doesnt create new <%= @helper.resource_name %>' do
-        expect { subject }.to change { <%= @helper.module_full_name %>.count }.by(0)
+      it 'doesnt create new <%= @generator.resource_name %>' do
+        expect { subject }.to change { <%= @generator.module_full_name %>.count }.by(0)
       end
 
-      it 'updates <%= @helper.resource_name %> with correct attributes' do
+      it 'updates <%= @generator.resource_name %> with correct attributes' do
         service = subject
 
         expect(service.success?).to eq true
         result = service.result
-        expect(result).to be_a <%= @helper.module_full_name %>
+        expect(result).to be_a <%= @generator.module_full_name %>
 
-        params[:<%= @helper.resource_name %>].each do |key, value|
+        params[:<%= @generator.resource_name %>].each do |key, value|
           expect(result[key]).to eq value
         end
       end
@@ -33,8 +33,8 @@ describe <%= @helper.full_class_name('update') %> do
     context 'with invalid params' do
       let(:params) do
         {
-          <%= @helper.resource_name %>: {
-            <%= @helper.permitted_attributes.map do |attr|
+          <%= @generator.resource_name %>: {
+            <%= @generator.permitted_attributes.map do |attr|
               "#{attr}: nil"
             end.join(",\n") %>
           }
@@ -46,7 +46,7 @@ describe <%= @helper.full_class_name('update') %> do
 
         expect(service.success?).to eq false
         expect(service.result).to eq nil
-        expect(service.error).to be_a <%= @helper.module_full_name %>
+        expect(service.error).to be_a <%= @generator.module_full_name %>
         expect(service.error.valid?).to eq false
       end
     end

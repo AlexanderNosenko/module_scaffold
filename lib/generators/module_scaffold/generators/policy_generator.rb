@@ -1,6 +1,6 @@
 require_relative './concerns/generatable'
 
-class PolicyGeneratorHelper
+class PolicyGenerator
 
   include Generatable
 
@@ -31,7 +31,7 @@ class PolicyGeneratorHelper
   end
 
   def action_allowed?(action_name)
-    controller_helper.actions.include?(action_name.to_sym).present?
+    controller_generator.actions.include?(action_name.to_sym).present?
   end
 
   private
@@ -40,8 +40,8 @@ class PolicyGeneratorHelper
     'Policy'
   end
 
-  def controller_helper
-    @controller_helper ||= ControllerGeneratorHelper.new(module_full_name, options)
+  def controller_generator
+    @controller_generator ||= ControllerGenerator.new(module_full_name, options)
   end
 
 end

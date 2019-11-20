@@ -1,6 +1,6 @@
 require_relative './concerns/generatable'
 
-class ControllerGeneratorHelper
+class ControllerGenerator
 
   include Generatable
 
@@ -36,7 +36,7 @@ class ControllerGeneratorHelper
   end
 
   def service_name(action)
-    services_helper.full_class_name(action)
+    services_generator.full_class_name(action)
   end
 
   private
@@ -45,8 +45,8 @@ class ControllerGeneratorHelper
     'Controller'
   end
 
-  def services_helper
-    @services_helper ||= ServicesGeneratorHelper.new(module_full_name, options)
+  def services_generator
+    @services_generator ||= ServicesGenerator.new(module_full_name, options)
   end
 
 end

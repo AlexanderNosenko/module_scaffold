@@ -1,6 +1,6 @@
 require_relative './concerns/generatable'
 
-class SerializerGeneratorHelper
+class SerializerGenerator
 
   include Generatable
 
