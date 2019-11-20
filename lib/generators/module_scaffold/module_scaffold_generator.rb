@@ -10,6 +10,7 @@ require_relative './helpers/integration_spec_generator_helper'
 require_relative './helpers/descriptor_spec_generator_helper'
 require_relative './helpers/policy_spec_generator_helper'
 require_relative './helpers/serializer_spec_generator_helper'
+require_relative './helpers/routes_generator_helper'
 
 class ModuleScaffoldGenerator < Rails::Generators::NamedBase
   source_root File.expand_path('templates', __dir__)
@@ -39,23 +40,6 @@ class ModuleScaffoldGenerator < Rails::Generators::NamedBase
     end
   end
 
-  def add_routes
-    return if options[:'skip-routes'].present?
-
-    @controller_helper = ControllerGeneratorHelper.new(name, options)
-
-    route_string = mc_wrap_route_with_namespaces(options[:'routes-namespace']) do
-      actions = @controller_helper
-                .actions
-                .map { |attr| ":#{attr}" }
-                .join(', ')
-
-      "resources :#{@controller_helper.resource_name_plural}, only: [#{actions}]"
-    end
-
-    route route_string
-  end
-
   private
 
   def required_generators
@@ -75,6 +59,8 @@ class ModuleScaffoldGenerator < Rails::Generators::NamedBase
       elsif  options[:only].present?
         default_generators.select! { |g| options[:only].include?(g) }
       end
+
+      default_generators.push('routes') unless options[:'skip-routes']
     end
   end
 
@@ -84,11 +70,15 @@ class ModuleScaffoldGenerator < Rails::Generators::NamedBase
   end
 
   def create_files_from_template(helper)
-    helper.versions.map do |version|
-      template(
-        helper.template_path(version),
-        helper.class_file_path(version)
-      )
+    if helper.is_a? RoutesGeneratorHelper
+      route helper.route_string
+    else
+      helper.versions.map do |version|
+        template(
+          helper.template_path(version),
+          helper.class_file_path(version)
+        )
+      end
     end
   end
 end

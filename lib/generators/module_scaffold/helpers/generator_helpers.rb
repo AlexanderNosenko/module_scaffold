@@ -29,7 +29,7 @@ module GeneratorHelpers
 
   def mc_wrap_route_with_namespaces(namespace, &context_block)
     content = yield context_block
-    content = indent(content.strip).chomp
+    content = content.strip.chomp.indent(2)
 
     modules = Generatable.namespace_modules(namespace)
     return content if modules.size.zero?
@@ -47,9 +47,11 @@ module GeneratorHelpers
       end
 
       module_definition = "namespace :#{namespace_part.underscore} do \n#{maybe_content}\nend"
-      module_definition = indent(module_definition) unless index.zero?
+      module_definition = module_definition.indent(2) unless index.zero?
 
       acc.gsub!('placeholder', module_definition)
     end.strip + "\n"
   end
+
+  module_function :mc_wrap_route_with_namespaces
 end
