@@ -16,10 +16,6 @@ class SerializerGeneratorHelper
     "#{resource_name}_#{helper_type.underscore}.rb"
   end
 
-  def namespace_dirs
-    namespace_modules(module_full_name)[0..-2]
-  end
-
   def permitted_attributes
     model_class.new.attributes.keys
   end

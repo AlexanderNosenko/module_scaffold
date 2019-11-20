@@ -22,17 +22,12 @@ class PolicySpecGeneratorHelper
     "#{resource_name}_#{helper_type.underscore}_spec.rb"
   end
 
-  def namespace_dirs
-    namespace_modules(module_full_name)[0..-2]
-  end
-
   def permitted_attributes
     model_class.new.attributes.keys
   end
 
   def permitted_actions
-    @controller_helper = ControllerGeneratorHelper.new(module_full_name, options)
-    @controller_helper.actions
+    controller_helper.actions
   end
 
   def permitted_attributes_formatted_str
@@ -45,6 +40,10 @@ class PolicySpecGeneratorHelper
 
   def helper_type
     'Policy'
+  end
+
+  def controller_helper
+    @controller_helper ||= ControllerGeneratorHelper.new(module_full_name, options)
   end
 
 end

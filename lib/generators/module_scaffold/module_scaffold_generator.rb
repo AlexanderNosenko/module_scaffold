@@ -1,17 +1,13 @@
 # frozen_string_literal: true
 
-# TODO: Misc
-#   * Add relations descriptors generator integration.erb
-#   * add more features to specs
-#
 require_relative './helpers/generator_helpers'
 require_relative './helpers/controller_generator_helper'
-require_relative './helpers/service_generator_helper'
+require_relative './helpers/services_generator_helper'
 require_relative './helpers/policy_generator_helper'
 require_relative './helpers/serializer_generator_helper'
-require_relative './helpers/service_spec_generator_helper'
+require_relative './helpers/services_specs_generator_helper'
 require_relative './helpers/integration_spec_generator_helper'
-require_relative './helpers/spec_descriptor_generator_helper'
+require_relative './helpers/descriptor_spec_generator_helper'
 require_relative './helpers/policy_spec_generator_helper'
 require_relative './helpers/serializer_spec_generator_helper'
 
@@ -28,28 +24,17 @@ class ModuleScaffoldGenerator < Rails::Generators::NamedBase
 
   include GeneratorHelpers
 
-  def initialize_helpers
+  def ensure_module_exists
     begin
       name.constantize
     rescue StandardError
       raise "Model #{name} is not defined"
     end
-
-    @controller_helper = ControllerGeneratorHelper.new(name, options)
-    @policy_helper = PolicyGeneratorHelper.new(name)
-    @services_helper = ServiceGeneratorHelper.new(name, options)
-    @serializer_helper = SerializerGeneratorHelper.new(name)
-    @services_specs_helper = ServiceSpecGeneratorHelper.new(name, options)
-    @integration_spec_helper = IntegrationSpecGeneratorHelper.new(name, options)
-    @descriptor_spec_helper = SpecDescriptorGeneratorHelper.new(name)
-    @policy_spec_helper = PolicySpecGeneratorHelper.new(name, options)
-    @serializer_spec_helper = SerializerSpecGeneratorHelper.new(name)
   end
 
   def run_generators
     required_generators.each do |generator_name|
-      generator_helper = instance_variable_get("@#{generator_name}_helper")
-
+      generator_helper = initialize_helper(generator_name)
       create_files_from_template(generator_helper)
     end
   end
@@ -57,7 +42,9 @@ class ModuleScaffoldGenerator < Rails::Generators::NamedBase
   def add_routes
     return if options[:'skip-routes'].present?
 
-    route_string = mc_wrap_route_with_namespaces(@controller_helper.namespace) do
+    @controller_helper = ControllerGeneratorHelper.new(name, options)
+
+    route_string = mc_wrap_route_with_namespaces(options[:'routes-namespace']) do
       actions = @controller_helper
                 .actions
                 .map { |attr| ":#{attr}" }
@@ -89,6 +76,11 @@ class ModuleScaffoldGenerator < Rails::Generators::NamedBase
         default_generators.select! { |g| options[:only].include?(g) }
       end
     end
+  end
+
+  def initialize_helper(generator_name)
+    helper = "#{generator_name.camelize}GeneratorHelper".constantize.new(name, options)
+    instance_variable_set('@helper', helper)
   end
 
   def create_files_from_template(helper)

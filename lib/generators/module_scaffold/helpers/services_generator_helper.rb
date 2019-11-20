@@ -1,6 +1,6 @@
 require_relative './concerns/generatable'
 
-class ServiceGeneratorHelper
+class ServicesGeneratorHelper
 
   include Generatable
 

@@ -1,29 +1,29 @@
-<%= mc_wrap_with_namespaces(@policy_helper.namespace_dirs) do
+<%= mc_wrap_with_namespaces(@helper.namespace_dirs) do
 <<-EOS
-class #{@policy_helper.class_name} < BasePolicy
+class #{@helper.class_name} < BasePolicy
 
   def permitted_attributes
     [
-      #{@policy_helper.permitted_attributes_formatted_str}
+      #{@helper.permitted_attributes_formatted_str}
     ]
   end
-#{@controller_helper.actions.include?(:index).present? ? "
+#{@helper.action_allowed?(:index) ? "
   def index?
     true
   end" : ''}
-#{@controller_helper.actions.include?(:create).present? ? "
+#{@helper.action_allowed?(:create) ? "
   def create?
     true
   end" : ''}
-#{@controller_helper.actions.include?(:show).present? ? "
+#{@helper.action_allowed?(:show) ? "
   def show?
     true
   end" : ''}
-#{@controller_helper.actions.include?(:update).present? ? "
+#{@helper.action_allowed?(:update) ? "
   def update?
     true
   end" : ''}
-#{@controller_helper.actions.include?(:destroy).present? ? "
+#{@helper.action_allowed?(:destroy) ? "
   def destroy?
     update?
   end" : ''}

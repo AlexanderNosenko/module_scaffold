@@ -39,6 +39,10 @@ module Generatable
     directory_path.join('/')
   end
 
+  def namespace_dirs
+    namespace_modules(module_full_name)[0..-2]
+  end
+
   def namespace_modules(namespace)
     if namespace.is_a?(Array)
       namespace
@@ -54,4 +58,18 @@ module Generatable
   end
 
   module_function :namespace_modules
+
+  private
+
+  def policy_helper
+    @policy_helper ||= PolicyGeneratorHelper.new(module_full_name, options)
+  end
+
+  def policy_spec_helper
+    @policy_spec_helper ||= PolicySpecGeneratorHelper.new(module_full_name, options)
+  end
+
+  def services_specs_helper
+    @services_specs_helper ||= ServicesSpecsGeneratorHelper.new(module_full_name, options)
+  end
 end

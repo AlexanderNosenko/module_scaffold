@@ -1,8 +1,8 @@
-<%= mc_wrap_with_namespaces(@serializer_helper.namespace_dirs) do
+<%= mc_wrap_with_namespaces(@helper.namespace_dirs) do
 <<-EOS
-class #{@serializer_helper.class_name} < BaseSerializer
+class #{@helper.class_name} < BaseSerializer
 
-  attributes #{@serializer_helper.permitted_attributes_formatted_str}
+  attributes #{@helper.permitted_attributes_formatted_str}
 
 end
 EOS

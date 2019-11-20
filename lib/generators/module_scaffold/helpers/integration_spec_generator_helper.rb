@@ -18,10 +18,6 @@ class IntegrationSpecGeneratorHelper
     "#{class_name.underscore}_spec.rb"
   end
 
-  def namespace_dirs
-    namespace_modules(module_full_name)[0..-2]
-  end
-
   def descriptor_class_name
     "#{module_full_name}Descriptor"
   end
@@ -47,10 +43,18 @@ class IntegrationSpecGeneratorHelper
     "#{resource_name}_id"
   end
 
+  def tested_attributes
+    services_specs_helper.tested_attributes_formatted_str
+  end
+
   private
 
   def helper_type
     'Integration'
+  end
+
+  def services_specs_helper
+    @services_specs_helper ||= ServicesSpecsGeneratorHelper.new(module_full_name, options)
   end
 
 end
