@@ -60,6 +60,7 @@ module Generatable
   def generate_files(template_processor:, **)
     versions.map do |version|
       template_processor.call(
+        self,
         template_path(version),
         class_file_path(version)
       )

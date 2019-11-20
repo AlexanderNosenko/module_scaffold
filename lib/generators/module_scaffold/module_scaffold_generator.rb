@@ -36,7 +36,10 @@ class ModuleScaffoldGenerator < Rails::Generators::NamedBase
   def run_generators
     required_generators.each do |generator_name|
       initialize_generator(generator_name).generate_files(
-        template_processor: proc { |*args| template(*args) },
+        template_processor: proc do |generator, *args|
+          @generator = generator
+          template(*args)
+        end,
         routes_processor: proc { |*args| route(*args) }
       )
     end
@@ -67,6 +70,6 @@ class ModuleScaffoldGenerator < Rails::Generators::NamedBase
   end
 
   def initialize_generator(generator_name)
-    @generator = "#{generator_name.camelize}Generator".constantize.new(name, options)
+    "#{generator_name.camelize}Generator".constantize.new(name, options)
   end
 end

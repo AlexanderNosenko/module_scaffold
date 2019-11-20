@@ -19,7 +19,7 @@ class IntegrationSpecGenerator
   end
 
   def descriptor_class_name
-    "#{module_full_name}Descriptor"
+    descriptor_generator.class_name
   end
 
   def index_route_str
@@ -47,10 +47,21 @@ class IntegrationSpecGenerator
     services_specs_generator.tested_attributes_formatted_str
   end
 
+  def relationship_descriptors_formatted_str
+    descriptor_generator
+      .model_relationships_descriptor_generators
+      .map(&:full_class_name)
+      .join(",\n")
+  end
+
   private
 
   def helper_type
     'Integration'
+  end
+
+  def descriptor_generator
+    @descriptor_generator ||= DescriptorSpecGenerator.new(module_full_name, options)
   end
 
   def services_specs_generator
