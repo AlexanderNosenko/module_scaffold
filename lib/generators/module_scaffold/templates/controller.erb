@@ -3,9 +3,8 @@
 class #{@controller_helper.class_name} < BaseController
 #{@controller_helper.actions.include?(:index).present? ? "
   def index
-    authorize(::#{@policy_helper.full_class_name})
+    authorize(::#{@controller_helper.module_full_name})
 
-    #{@controller_helper.resource_name_plural} = policy_scope(::#{@controller_helper.module_full_name})
     render_success(
       #{@controller_helper.resource_name_plural},
       meta: { total: #{@controller_helper.resource_name_plural}.count }
@@ -13,14 +12,15 @@ class #{@controller_helper.class_name} < BaseController
   end" : ''}
 #{@controller_helper.actions.include?(:create).present? ? "
   def create
-    authorize(::#{@policy_helper.full_class_name})
+    authorize(::#{@controller_helper.module_full_name})
 
-    service = ::#{@services_helper.full_class_name('create')}.call(params)
+    service = ::#{@controller_helper.services_helper.full_class_name('create')}.call(params)
+
     render_service(service)
   end" : ''}
 #{@controller_helper.actions.include?(:show).present? ? "
   def show
-    authorize(::#{@policy_helper.full_class_name})
+    authorize(#{@controller_helper.resource_name})
 
     render_success(#{@controller_helper.resource_name})
   end" : ''}
@@ -28,26 +28,27 @@ class #{@controller_helper.class_name} < BaseController
   def update
     authorize(#{@controller_helper.resource_name})
 
-    service = ::#{@services_helper.full_class_name('update')}.call(#{@controller_helper.resource_name}, params)
+    service = ::#{@controller_helper.services_helper.full_class_name('update')}.call(#{@controller_helper.resource_name}, params)
+
     render_service(service)
   end" : ''}
 #{@controller_helper.actions.include?(:destroy).present? ? "
   def destroy
     authorize(#{@controller_helper.resource_name})
 
-    service = ::#{@services_helper.full_class_name('destroy')}.call(#{@controller_helper.resource_name})
+    service = ::#{@controller_helper.services_helper.full_class_name('destroy')}.call(#{@controller_helper.resource_name})
 
-    if service.success?
-      render_success(:deleted)
-    else
-      render_error(service)
-    end
+    render_service(service)
   end" : ''}
 #{(@controller_helper.actions & [:show, :create, :update]).any? ? "
   private
 
   def #{@controller_helper.resource_name}
-    @#{@controller_helper.resource_name} ||= policy_scope(::#{@controller_helper.module_full_name}).find(params[:id])
+    @#{@controller_helper.resource_name} ||= #{@controller_helper.resource_name_plural}.find(params[:id])
+  end
+
+  def #{@controller_helper.resource_name_plural}
+    @#{@controller_helper.resource_name_plural} ||= policy_scope(::#{@controller_helper.module_full_name})
   end" : ''}
 
 end
