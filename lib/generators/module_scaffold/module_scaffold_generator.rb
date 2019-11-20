@@ -35,8 +35,10 @@ class ModuleScaffoldGenerator < Rails::Generators::NamedBase
 
   def run_generators
     required_generators.each do |generator_name|
-      generator_helper = initialize_helper(generator_name)
-      create_files_from_template(generator_helper)
+      initialize_helper(generator_name).generate_files(
+        template_processor: proc { |*args| template(*args) },
+        routes_processor: proc { |*args| route(*args) }
+      )
     end
   end
 
@@ -67,18 +69,5 @@ class ModuleScaffoldGenerator < Rails::Generators::NamedBase
   def initialize_helper(generator_name)
     helper = "#{generator_name.camelize}GeneratorHelper".constantize.new(name, options)
     instance_variable_set('@helper', helper)
-  end
-
-  def create_files_from_template(helper)
-    if helper.is_a? RoutesGeneratorHelper
-      route helper.route_string
-    else
-      helper.versions.map do |version|
-        template(
-          helper.template_path(version),
-          helper.class_file_path(version)
-        )
-      end
-    end
   end
 end

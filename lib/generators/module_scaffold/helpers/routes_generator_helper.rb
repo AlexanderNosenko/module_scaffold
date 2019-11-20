@@ -7,6 +7,10 @@ class RoutesGeneratorHelper
     end
   end
 
+  def generate_files(routes_processor:, **)
+    routes_processor.call(route_string)
+  end
+
   private
 
   def actions_str
