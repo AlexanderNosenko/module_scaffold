@@ -13,9 +13,7 @@ module ModuleScaffold
                                          object_schema(**options)
                                        end
 
-          if options[:included]
-            schema[:properties][:included] = included_schema(options[:included])
-          end
+          schema[:properties][:included] = included_schema if options[:included]
 
           if options[:with_total_count]
             schema[:properties][:meta] = {
@@ -70,11 +68,13 @@ module ModuleScaffold
         }
       end
 
-      def included_schema(included)
+      def included_schema
+        included = options[:included].map { |d| object_schema(descriptor: d) }
+
         {
           type: :array,
           items: {
-            anyOf: included.map(&method(:object_schema))
+            anyOf: included
           }
         }
       end
