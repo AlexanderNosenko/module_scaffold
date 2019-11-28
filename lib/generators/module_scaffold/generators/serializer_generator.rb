@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require_relative './concerns/generatable'
 
 class SerializerGenerator
-
   include Generatable
 
   def template_path(_)
@@ -31,5 +32,4 @@ class SerializerGenerator
   def helper_type
     'Serializer'
   end
-
 end

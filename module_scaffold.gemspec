@@ -35,5 +35,4 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'pundit'
   spec.add_runtime_dependency 'rspec-rails'
   spec.add_runtime_dependency 'rswag-specs'
-
 end

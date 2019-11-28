@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require_relative './concerns/generatable'
 
 class ServicesGenerator
-
   include Generatable
 
   def template_path(version)
@@ -27,7 +28,7 @@ class ServicesGenerator
   end
 
   def versions
-    controller_generator.actions & [:create, :update, :destroy]
+    controller_generator.actions & %i[create update destroy]
   end
 
   private
@@ -39,5 +40,4 @@ class ServicesGenerator
   def controller_generator
     @controller_generator ||= ControllerGenerator.new(module_full_name, options)
   end
-
 end

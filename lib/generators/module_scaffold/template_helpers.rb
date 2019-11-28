@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module TemplateHelpers
   private
 
@@ -10,9 +12,9 @@ module TemplateHelpers
 
     modules.each_with_index.reduce('placeholder') do |acc, (namespace_part, index)|
       maybe_content = if (index + 1) == modules.size
-        content
-      else
-        'placeholder'
+                        content
+                      else
+                        'placeholder'
       end
 
       if content != 'placeholder'
@@ -36,9 +38,9 @@ module TemplateHelpers
 
     modules.each_with_index.reduce('placeholder') do |acc, (namespace_part, index)|
       maybe_content = if (index + 1) == modules.size
-        content
-      else
-        'placeholder'
+                        content
+                      else
+                        'placeholder'
       end
 
       if content != 'placeholder'

@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require_relative './concerns/generatable'
 require_relative './concerns/spec_generatable'
 
 class IntegrationSpecGenerator
-
   include Generatable
   include SpecGeneratable
 
@@ -67,5 +68,4 @@ class IntegrationSpecGenerator
   def services_specs_generator
     @services_specs_generator ||= ServicesSpecsGenerator.new(module_full_name, options)
   end
-
 end
