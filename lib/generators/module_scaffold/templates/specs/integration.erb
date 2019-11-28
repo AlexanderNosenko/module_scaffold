@@ -27,8 +27,8 @@ RSpec.describe '<%= @generator.class_name %>', type: :request, rswag: true do
         ))
 
         run_test! do
-          expect_json_sizes('data', 1)
-          expect_json('data.0.id', <%= @generator.resource_name %>.id.to_s)
+          expect_json_sizes('data', ::<%= @generator.module_full_name %>.count)
+          expect_json('data.?.id', <%= @generator.resource_name %>.id.to_s)
         end
 
       end
