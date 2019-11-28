@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module SpecGeneratable
   def files_dir
     directory_path = ['spec', helper_type.underscore.pluralize]

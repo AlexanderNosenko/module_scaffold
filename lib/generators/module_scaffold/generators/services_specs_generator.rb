@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require_relative './concerns/generatable'
 require_relative './concerns/spec_generatable'
 
 class ServicesSpecsGenerator
-
   include Generatable
   include SpecGeneratable
 
@@ -33,7 +34,7 @@ class ServicesSpecsGenerator
   end
 
   def tested_attributes_formatted_str
-    attributes = policy_generator.permitted_attributes - ['id', 'created_at', 'updated_at']
+    attributes = policy_generator.permitted_attributes - %w[id created_at updated_at]
 
     attributes.map do |attr|
       "#{attr}: Faker::Name.first_name"
@@ -57,6 +58,4 @@ class ServicesSpecsGenerator
   def services_generator
     @services_generator ||= ServicesGenerator.new(module_full_name, options)
   end
-
-
 end

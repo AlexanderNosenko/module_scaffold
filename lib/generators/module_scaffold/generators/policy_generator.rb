@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require_relative './concerns/generatable'
 
 class PolicyGenerator
-
   include Generatable
 
   def template_path(_)
@@ -43,5 +44,4 @@ class PolicyGenerator
   def controller_generator
     @controller_generator ||= ControllerGenerator.new(module_full_name, options)
   end
-
 end

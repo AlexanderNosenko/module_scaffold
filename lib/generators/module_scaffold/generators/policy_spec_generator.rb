@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require_relative './concerns/generatable'
 require_relative './concerns/spec_generatable'
 
 class PolicySpecGenerator
-
   include Generatable
   include SpecGeneratable
 
@@ -45,5 +46,4 @@ class PolicySpecGenerator
   def controller_generator
     @controller_generator ||= ControllerGenerator.new(module_full_name, options)
   end
-
 end

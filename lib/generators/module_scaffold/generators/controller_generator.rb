@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require_relative './concerns/generatable'
 
 class ControllerGenerator
-
   include Generatable
 
   def template_path(_)
@@ -25,7 +26,7 @@ class ControllerGenerator
   end
 
   def actions
-    @default_actions ||= [:index, :show, :create, :update, :destroy]
+    @default_actions ||= %i[index show create update destroy]
     return @default_actions if options.blank?
 
     options[:'controller-actions'].map(&:to_sym).presence || @default_actions
@@ -48,5 +49,4 @@ class ControllerGenerator
   def services_generator
     @services_generator ||= ServicesGenerator.new(module_full_name, options)
   end
-
 end
