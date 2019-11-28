@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ::<%= @generator.full_class_name('destroy') %> do
+RSpec.describe ::<%= @generator.full_class_name('destroy') %> do
   subject { described_class.new(<%= @generator.resource_name %>).call }
 
   let_it_be(:<%= @generator.resource_name %>) { create(:<%= @generator.resource_name %>) }

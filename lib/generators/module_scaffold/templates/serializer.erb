@@ -1,6 +1,6 @@
 <%= mc_wrap_with_namespaces(@generator.namespace_dirs) do
 <<-EOS
-class #{@generator.class_name} < BaseSerializer
+class #{@generator.class_name} < ApplicationSerializer
 
   attributes #{@generator.permitted_attributes_formatted_str}
 
