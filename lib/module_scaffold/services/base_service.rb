@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 module ModuleScaffold
   module Services
     class BaseService
-
       def call(*_args)
         self
       end
@@ -63,17 +64,13 @@ module ModuleScaffold
       end
 
       class ServiceError < StandardError
-
         attr_reader :original_error
 
         def initialize(error, message: nil)
           super(message)
           @original_error = error
         end
-
       end
-
     end
-
   end
 end
