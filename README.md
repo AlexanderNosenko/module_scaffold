@@ -58,6 +58,11 @@ create  spec/serializers/animals/dog_serializer_spec.rb
   route    resources :dogs, only: [:index, :show, :create, :update, :destroy]
  ```
 
+* You should also load descriptors in `spec_helper`
+```ruby
+Dir[File.expand_path('descriptors/**/*.rb', __dir__)].each { |f| require f }
+```
+
 ##### 'I really don't need this file' usage
 
 To get the list of available options please run:

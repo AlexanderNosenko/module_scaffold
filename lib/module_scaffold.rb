@@ -18,5 +18,7 @@ require 'module_scaffold/spec_support/serializer_helpers'
 require 'module_scaffold/serializers/errors/error_serializer'
 require 'module_scaffold/serializers/errors/validation_error_serializer'
 
+require 'module_scaffold/services/base_service'
+
 module ModuleScaffold
 end
