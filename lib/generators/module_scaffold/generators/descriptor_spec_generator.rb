@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require_relative './concerns/generatable'
 
 class DescriptorSpecGenerator
-
   include Generatable
 
   def template_path(_)
@@ -63,5 +64,4 @@ class DescriptorSpecGenerator
   def policy_generator
     @policy_generator ||= PolicyGenerator.new(module_full_name, options)
   end
-
 end

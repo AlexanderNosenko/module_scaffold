@@ -26,11 +26,9 @@ class ModuleScaffoldGenerator < Rails::Generators::NamedBase
   include TemplateHelpers
 
   def ensure_module_exists
-    begin
-      name.constantize
-    rescue StandardError
-      raise "Model #{name} is not defined"
-    end
+    name.constantize
+  rescue StandardError
+    raise "Model #{name} is not defined"
   end
 
   def run_generators

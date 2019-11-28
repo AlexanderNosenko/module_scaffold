@@ -1,8 +1,9 @@
+# frozen_string_literal: true
+
 require_relative './concerns/generatable'
 require_relative './concerns/spec_generatable'
 
 class SerializerSpecGenerator
-
   include Generatable
   include SpecGeneratable
 
@@ -39,5 +40,4 @@ class SerializerSpecGenerator
   def serializer_generator
     @serializer_generator ||= SerializerGenerator.new(module_full_name, options)
   end
-
 end
