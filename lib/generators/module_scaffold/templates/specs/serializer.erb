@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-describe ::<%= @helper.full_class_name %>, type: :serializer do
+describe ::<%= @generator.full_class_name %>, type: :serializer do
   subject { described_class.new(resource).serializable_hash[:data] }
-  let_it_be(:resource) { build_stubbed(:<%= @helper.resource_name %>) }
+  let_it_be(:resource) { build_stubbed(:<%= @generator.resource_name %>) }
 
   describe 'serialized_json' do
     it 'returns correct id' do
@@ -10,12 +10,12 @@ describe ::<%= @helper.full_class_name %>, type: :serializer do
     end
 
     it 'returns correct type' do
-      expect_correct_type(:<%= @helper.resource_name %>)
+      expect_correct_type(:<%= @generator.resource_name %>)
     end
 
     it 'returns correct attributes' do
       expect_correct_attributes([
-        <%= @helper.permitted_attributes_formatted_str %>
+        <%= @generator.permitted_attributes_formatted_str %>
       ])
     end
 

@@ -57,19 +57,15 @@ module Generatable
     ]
   end
 
+  def generate_files(template_processor:, **)
+    versions.map do |version|
+      template_processor.call(
+        self,
+        template_path(version),
+        class_file_path(version)
+      )
+    end
+  end
+
   module_function :namespace_modules
-
-  private
-
-  def policy_helper
-    @policy_helper ||= PolicyGeneratorHelper.new(module_full_name, options)
-  end
-
-  def policy_spec_helper
-    @policy_spec_helper ||= PolicySpecGeneratorHelper.new(module_full_name, options)
-  end
-
-  def services_specs_helper
-    @services_specs_helper ||= ServicesSpecsGeneratorHelper.new(module_full_name, options)
-  end
 end

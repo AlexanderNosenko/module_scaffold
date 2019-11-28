@@ -1,21 +1,21 @@
-<%= mc_wrap_with_namespaces(@helper.namespace_dirs) do
+<%= mc_wrap_with_namespaces(@generator.namespace_dirs) do
   <<-EOS
-class #{@helper.class_name('destroy')} < BaseService
+class #{@generator.class_name('destroy')} < BaseService
 
-  def initialize(#{@helper.resource_name})
-    @#{@helper.resource_name} = #{@helper.resource_name}
+  def initialize(#{@generator.resource_name})
+    @#{@generator.resource_name} = #{@generator.resource_name}
   end
 
   def call
-    #{@helper.resource_name}.destroy!
-    success(#{@helper.resource_name})
+    #{@generator.resource_name}.destroy!
+    success(#{@generator.resource_name})
   rescue ActiveRecord::RecordNotDestroyed => e
     failure(e.record)
   end
 
   private
 
-  attr_reader :params, :#{@helper.resource_name}
+  attr_reader :params, :#{@generator.resource_name}
 
 end
 EOS

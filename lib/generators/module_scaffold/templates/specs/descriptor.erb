@@ -1,15 +1,15 @@
-<%= mc_wrap_with_namespaces(@helper.namespace_dirs) do
+<%= mc_wrap_with_namespaces(@generator.namespace_dirs) do
 <<-EOS
-class #{@helper.class_name} < BaseDescriptor
+class #{@generator.class_name} < BaseDescriptor
 
   def type
-    '#{@helper.resource_name}'
+    '#{@generator.resource_name}'
   end
 
   def response_attributes
     {
-      #{@helper.attributes.map do |attr|
-        @helper.format_attr_str(attr)
+      #{@generator.attributes.map do |attr|
+        @generator.format_attr_str(attr)
       end.join(",\n")}
     }
   end
@@ -18,16 +18,16 @@ class #{@helper.class_name} < BaseDescriptor
     {
       type: :object,
       properties: {
-        #{@helper.resource_name}: {
+        #{@generator.resource_name}: {
           type: :object,
           properties: {
-            #{@helper.attributes.map do |attr|
-              @helper.format_attr_str(attr)
+            #{@generator.attributes.map do |attr|
+              @generator.format_attr_str(attr)
             end.join(",\n")}
           }
         }
       },
-      required: ['#{@helper.resource_name}']
+      required: ['#{@generator.resource_name}']
     }
   end
 

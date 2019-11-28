@@ -1,18 +1,11 @@
 require_relative './concerns/generatable'
 
-class ServicesGeneratorHelper
+class ServicesGenerator
 
   include Generatable
 
   def template_path(version)
     "services/#{version}.erb"
-  end
-
-  def class_file_path(version)
-    File.join(
-      files_dir,
-      class_file_name(version)
-    )
   end
 
   def class_name(action)
@@ -34,15 +27,17 @@ class ServicesGeneratorHelper
   end
 
   def versions
-    @controller_helper = ControllerGeneratorHelper.new(module_full_name, options)
-
-    @controller_helper.actions & [:create, :update, :destroy]
+    controller_generator.actions & [:create, :update, :destroy]
   end
 
   private
 
   def helper_type
     'Service'
+  end
+
+  def controller_generator
+    @controller_generator ||= ControllerGenerator.new(module_full_name, options)
   end
 
 end

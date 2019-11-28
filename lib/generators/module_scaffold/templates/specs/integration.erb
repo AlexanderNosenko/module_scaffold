@@ -1,37 +1,37 @@
 require 'swagger_helper'
 
-describe '<%= @helper.class_name %>', type: :request, rswag: true do
-  let_it_be(:<%= @helper.resource_name %>) { create(:<%= @helper.resource_name %>) }
-  let_it_be(:<%= @helper.route_id_param %>) { <%= @helper.resource_name %>.id }
+describe '<%= @generator.class_name %>', type: :request, rswag: true do
+  let_it_be(:<%= @generator.resource_name %>) { create(:<%= @generator.resource_name %>) }
+  let_it_be(:<%= @generator.route_id_param %>) { <%= @generator.resource_name %>.id }
 
   let(:params) do
     {
-      <%= @helper.resource_name %>: {
-        <%= @helper.tested_attributes %>
+      <%= @generator.resource_name %>: {
+        <%= @generator.tested_attributes %>
       }
     }
   end
 
-  path '<%= @helper.index_route_str %>' do
-    get 'List all available <%= @helper.resource_name_plural %> in a given context' do
-      tags '<%= @helper.class_name %>'
+  path '<%= @generator.index_route_str %>' do
+    get 'List all available <%= @generator.resource_name_plural %> in a given context' do
+      tags '<%= @generator.class_name %>'
       produces 'application/json'
 
-      let_it_be(:external_<%= @helper.resource_name_plural %>) do
-        create_list(:<%= @helper.resource_name %>, 1)
+      let_it_be(:external_<%= @generator.resource_name_plural %>) do
+        create_list(:<%= @generator.resource_name %>, 1)
       end
 
       response '200', 'ok' do
         schema(rswag_scheme(
-          <%= @helper.descriptor_class_name %>,
+          <%= @generator.descriptor_class_name %>,
             collection: true,
-            relationships: [],
-            included: []
+            relationships: [<%= @generator.relationship_descriptors_formatted_str %>],
+            included: [<%= @generator.relationship_descriptors_formatted_str %>]
         ))
 
         run_test! do
           expect_json_sizes('data', 1)
-          expect_json('data.0.id', <%= @helper.resource_name %>.id.to_s)
+          expect_json('data.0.id', <%= @generator.resource_name %>.id.to_s)
         end
 
       end
@@ -44,27 +44,27 @@ describe '<%= @helper.class_name %>', type: :request, rswag: true do
       end
     end
 
-    post 'Create a <%= @helper.resource_name %>' do
-      tags '<%= @helper.class_name %>'
+    post 'Create a <%= @generator.resource_name %>' do
+      tags '<%= @generator.class_name %>'
       produces 'application/json'
       consumes 'application/json'
-      parameter name: :params, in: :body, schema: <%= @helper.descriptor_class_name %>.new.request_attributes
+      parameter name: :params, in: :body, schema: <%= @generator.descriptor_class_name %>.new.request_attributes
 
       response '200', 'ok' do
         schema(rswag_scheme(
-          <%= @helper.descriptor_class_name %>,
-          relationships: [],
-          included: []
+          <%= @generator.descriptor_class_name %>,
+          relationships: [<%= @generator.relationship_descriptors_formatted_str %>],
+          included: [<%= @generator.relationship_descriptors_formatted_str %>]
         ))
 
         run_test! do
-          expected_value = <%= @helper.sample_param_reference %>
-          expect_json('data.attributes.<%= @helper.sample_attribute_name %>', expected_value)
+          expected_value = <%= @generator.sample_param_reference %>
+          expect_json('data.attributes.<%= @generator.sample_attribute_name %>', expected_value)
         end
       end
 
       response '422', 'unprocessable_entity' do
-        before { <%= @helper.sample_param_reference %> = '' }
+        before { <%= @generator.sample_param_reference %> = '' }
 
         schema(rswag_error_scheme)
         run_test!
@@ -72,70 +72,70 @@ describe '<%= @helper.class_name %>', type: :request, rswag: true do
     end
   end
 
-  path '<%= @helper.index_route_str %>/{<%= @helper.route_id_param %>}' do
-    get 'Get details of a given <%= @helper.resource_name %>' do
-      tags '<%= @helper.class_name %>'
+  path '<%= @generator.index_route_str %>/{<%= @generator.route_id_param %>}' do
+    get 'Get details of a given <%= @generator.resource_name %>' do
+      tags '<%= @generator.class_name %>'
       produces 'application/json'
-      parameter name: :<%= @helper.route_id_param %>, in: :path, type: :string
+      parameter name: :<%= @generator.route_id_param %>, in: :path, type: :string
 
       response '200', 'ok' do
         schema(rswag_scheme(
-          <%= @helper.descriptor_class_name %>,
-          relationships: [],
-          included: []
+          <%= @generator.descriptor_class_name %>,
+          relationships: [<%= @generator.relationship_descriptors_formatted_str %>],
+          included: [<%= @generator.relationship_descriptors_formatted_str %>]
         ))
 
         run_test! do
-          expect_json('data.id', <%= @helper.resource_name %>.id.to_s)
+          expect_json('data.id', <%= @generator.resource_name %>.id.to_s)
         end
       end
     end
 
-    patch 'Update a given <%= @helper.resource_name %>' do
-      tags '<%= @helper.class_name %>'
+    patch 'Update a given <%= @generator.resource_name %>' do
+      tags '<%= @generator.class_name %>'
       produces 'application/json'
       consumes 'application/json'
-      parameter name: :<%= @helper.route_id_param %>, in: :path, type: :string
-      parameter name: :params, in: :body, schema: <%= @helper.descriptor_class_name %>.new.request_attributes
+      parameter name: :<%= @generator.route_id_param %>, in: :path, type: :string
+      parameter name: :params, in: :body, schema: <%= @generator.descriptor_class_name %>.new.request_attributes
 
       response '200', 'ok' do
         schema(rswag_scheme(
-          <%= @helper.descriptor_class_name %>,
-          relationships: [],
-          included: []
+          <%= @generator.descriptor_class_name %>,
+          relationships: [<%= @generator.relationship_descriptors_formatted_str %>],
+          included: [<%= @generator.relationship_descriptors_formatted_str %>]
         ))
 
         run_test! do
-          expected_value = <%= @helper.sample_param_reference %>
-          expect_json('data.attributes.<%= @helper.sample_attribute_name %>', expected_value)
+          expected_value = <%= @generator.sample_param_reference %>
+          expect_json('data.attributes.<%= @generator.sample_attribute_name %>', expected_value)
         end
       end
 
       response '422', 'unprocessable_entity' do
-        before { <%= @helper.sample_param_reference %> = '' }
+        before { <%= @generator.sample_param_reference %> = '' }
 
         schema(rswag_error_scheme)
 
         run_test! do
-          expect_json('errors.0.source.pointer', '/data/attributes/<%= @helper.sample_attribute_name %>')
+          expect_json('errors.0.source.pointer', '/data/attributes/<%= @generator.sample_attribute_name %>')
           expect_json('errors.0.code', 'is_blank')
         end
       end
     end
 
-    delete 'Destroy <%= @helper.resource_name %>' do
-      tags '<%= @helper.class_name %>'
+    delete 'Destroy <%= @generator.resource_name %>' do
+      tags '<%= @generator.class_name %>'
       produces 'application/json'
       consumes 'application/json'
-      parameter name: :<%= @helper.route_id_param %>, in: :path, type: :string
+      parameter name: :<%= @generator.route_id_param %>, in: :path, type: :string
 
       response '200', 'ok' do
         schema({})
 
-        it 'destroys the <%= @helper.resource_name %>' do |example|
+        it 'destroys the <%= @generator.resource_name %>' do |example|
           expect do
             submit_request(example.metadata)
-          end.to change { ::<%= @helper.module_full_name %>.count }.by(-1)
+          end.to change { ::<%= @generator.module_full_name %>.count }.by(-1)
           assert_response_matches_metadata(example.metadata)
         end
       end
