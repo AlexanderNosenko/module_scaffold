@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ::<%= @generator.full_class_name %>, type: :serializer do
+RSpec.describe ::<%= @generator.full_class_name %>, type: :serializer do
   subject { described_class.new(resource).serializable_hash[:data] }
   let_it_be(:resource) { build_stubbed(:<%= @generator.resource_name %>) }
 

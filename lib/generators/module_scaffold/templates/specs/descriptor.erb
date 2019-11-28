@@ -1,6 +1,6 @@
 <%= mc_wrap_with_namespaces(@generator.namespace_dirs) do
 <<-EOS
-class #{@generator.class_name} < BaseDescriptor
+class #{@generator.class_name} < ModuleScaffold::Descriptors::ModelDescriptor
 
   def type
     '#{@generator.resource_name}'
