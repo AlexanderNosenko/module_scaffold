@@ -1,6 +1,6 @@
 <%= mc_wrap_with_namespaces(@generator.namespace_dirs) do
 <<-EOS
-class #{@generator.class_name('create')} < BaseService
+class #{@generator.class_name('create')} < ApplicationService
 
   def initialize(params)
     @params = params

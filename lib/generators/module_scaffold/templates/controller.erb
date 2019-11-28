@@ -1,6 +1,6 @@
 <%= mc_wrap_with_namespaces(@generator.namespace) do
 <<-EOS
-class #{@generator.class_name} < BaseController
+class #{@generator.class_name} < ApplicationController
 #{@generator.action_allowed?(:index) ? "
   def index
     authorize(::#{@generator.module_full_name})
