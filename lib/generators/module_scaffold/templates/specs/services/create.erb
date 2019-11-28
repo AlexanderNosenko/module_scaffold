@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe ::<%= @generator.full_class_name('create') %> do
+RSpec.describe ::<%= @generator.full_class_name('create') %> do
   subject { described_class.new(ActionController::Parameters.new(params)).call }
   let(:params) do
     {
@@ -34,7 +34,7 @@ describe ::<%= @generator.full_class_name('create') %> do
       {
         <%= @generator.resource_name %>: {
           <%= @generator.permitted_attributes.map do |attr|
-            "#{attr}: nil"
+            "#{attr}: ''"
           end.join(",\n") %>
         }
       }
@@ -50,7 +50,7 @@ describe ::<%= @generator.full_class_name('create') %> do
         expect(service.success?).to eq false
         expect(service.result).to eq nil
         expect(service.error).to be_a ::<%= @generator.module_full_name %>
-        expect(service.error.valid?).to eq false
+        expect(service.error).to be_a ModuleScaffold::Errors::ValidationError
       end
     end
   end
