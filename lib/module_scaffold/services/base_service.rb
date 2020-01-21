@@ -17,6 +17,10 @@ module ModuleScaffold
         result.present? && error.blank?
       end
 
+      def failure?
+        !success?
+      end
+
       private
 
       attr_writer :error, :result
@@ -36,23 +40,18 @@ module ModuleScaffold
         self
       end
 
-      def permitted_attributes(record, key: nil, allow_blank: false, authorization: nil)
-        key =
-          if key.present?
-            key
-          else
-            implicit_param_key(record)
-          end
+      def permitted_attributes(record, key: nil, session: nil, allow_blank: false)
+        resolved_key = resolve_key(key, record)
 
-        return {} if params[key].blank? && allow_blank
+        return {} if allow_blank && params[resolved_key].blank?
 
-        # based on pundit/lib/pundit.rb
-        policy = Pundit::PolicyFinder.new(record).policy!.new(authorization, record)
-
-        params.require(key).permit(policy.permitted_attributes)
+        policy = Pundit::PolicyFinder.new(record).policy!.new(session, record)
+        params.require(resolved_key).permit(policy.permitted_attributes)
       end
 
-      def implicit_param_key(record)
+      def resolve_key(key, record)
+        return key if key.present?
+
         klass =
           if record.is_a? ApplicationRecord
             record.class

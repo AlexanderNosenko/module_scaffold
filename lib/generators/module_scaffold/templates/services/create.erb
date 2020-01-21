@@ -22,9 +22,7 @@ class #{@generator.class_name('create')} < ApplicationService
   end
 
   def valid_params
-    return {} if params[:#{@generator.resource_name}].blank?
-
-    permitted_attributes(::#{@generator.module_full_name}, key: :#{@generator.resource_name})
+    permitted_attributes(::#{@generator.module_full_name})
   end
 
 end
