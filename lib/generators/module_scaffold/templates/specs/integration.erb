@@ -64,7 +64,10 @@ RSpec.describe '<%= @generator.class_name %>', type: :request, rswag: true do
 
         schema(ModuleScaffold::Descriptors::ValidationErrorDescriptor.schema)
 
-        run_test!
+        run_test! do
+          expect_json('errors.?.source.pointer', '/data/attributes/<%= @generator.sample_attribute_name %>')
+          expect_json('errors.?.detail', 'blank')
+        end
       end
     end
   end
@@ -89,7 +92,7 @@ RSpec.describe '<%= @generator.class_name %>', type: :request, rswag: true do
       response 404, :record_not_found do
         let(:vertical_id) { 'non_existent' }
 
-        schema(ModuleScafcfold::Descriptors::RecordNotFoundErrorDescriptor.schema)
+        schema(ModuleScaffold::Descriptors::RecordNotFoundErrorDescriptor.schema)
       end
     end
 
@@ -118,8 +121,8 @@ RSpec.describe '<%= @generator.class_name %>', type: :request, rswag: true do
         schema(ModuleScaffold::Descriptors::ValidationErrorDescriptor.schema)
 
         run_test! do
-          expect_json('errors.0.source.pointer', '/data/attributes/<%= @generator.sample_attribute_name %>')
-          expect_json('errors.0.code', 'is_blank')
+          expect_json('errors.?.source.pointer', '/data/attributes/<%= @generator.sample_attribute_name %>')
+          expect_json('errors.?.detail', 'blank')
         end
       end
     end
