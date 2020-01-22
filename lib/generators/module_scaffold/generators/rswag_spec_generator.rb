@@ -3,12 +3,12 @@
 require_relative './concerns/generatable'
 require_relative './concerns/spec_generatable'
 
-class IntegrationSpecGenerator
+class RswagSpecGenerator
   include Generatable
   include SpecGeneratable
 
   def template_path(_)
-    'specs/integration.erb'
+    'specs/rswag.erb'
   end
 
   def class_name
@@ -58,7 +58,7 @@ class IntegrationSpecGenerator
   private
 
   def helper_type
-    'Integration'
+    'Rswag'
   end
 
   def descriptor_generator
