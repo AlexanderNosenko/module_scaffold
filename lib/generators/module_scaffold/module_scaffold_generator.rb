@@ -6,7 +6,7 @@ require_relative './generators/services_generator'
 require_relative './generators/policy_generator'
 require_relative './generators/serializer_generator'
 require_relative './generators/services_specs_generator'
-require_relative './generators/integration_spec_generator'
+require_relative './generators/rswag_spec_generator'
 require_relative './generators/descriptor_spec_generator'
 require_relative './generators/policy_spec_generator'
 require_relative './generators/serializer_spec_generator'
@@ -52,7 +52,7 @@ class ModuleScaffoldGenerator < Rails::Generators::NamedBase
       serializer
       services
       descriptor_spec
-      integration_spec
+      rswag_spec
       policy_spec
       services_specs
       serializer_spec

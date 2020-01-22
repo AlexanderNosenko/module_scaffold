@@ -48,7 +48,7 @@ create  app/serializers/animals/dog_serializer.rb
 create  app/services/animals/dogs/create_dog.rb
 create  app/services/animals/dogs/update_dog.rb
 create  app/services/animals/dogs/destroy_dog.rb
-create  spec/integrations/animals/dogs_spec.rb
+create  spec/rswag/animals/dogs_spec.rb
 create  spec/descriptors/animals/dog_descriptor.rb
 create  spec/policies/animals/dog_policy_spec.rb
 create  spec/services/animals/dogs/create_dog_spec.rb
